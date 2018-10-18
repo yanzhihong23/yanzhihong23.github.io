@@ -1,3 +1,3 @@
-# 封面
+# Hom Yan
 
-> 这是封面页
+> Hom's Blog
