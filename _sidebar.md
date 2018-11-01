@@ -1,7 +1,7 @@
 - [1. 调用栈]()
 - [2. 原始类型](/primitive-types/the-secrect-life-of-javascript-primitives.md)
   - [JavaScript 原始类型的秘密生命](/primitive-types/the-secrect-life-of-javascript-primitives.md)
-- [3. 值类型和引用类型](/)
+- [3. 值类型和引用类型](/value-types-and-reference-types/explaining-value-vs-reference.md)
   - [JavaScript 里的值和引用](/value-types-and-reference-types/explaining-value-vs-reference.md)
 - [4. 隐式、显式、标称、结构化以及鸭子类型](/)
 - [5. == vs === vs typeof](/)
