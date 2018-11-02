@@ -1,14 +1,14 @@
-# 理解 JavaScript 方法执行 -- 调用栈、事件循环、任务以及其他
+# 理解 JavaScript 函数执行 -- 调用栈、事件循环、任务以及其他
 
 [原文](https://medium.com/@gaurav.pandvia/understanding-javascript-function-executions-tasks-event-loop-call-stack-more-part-1-5683dea1f5ec)
 
 Web 开发人员或前端工程师(我们更喜欢的称呼)，现在可以做任何事情，从充当浏览器内部的交互源，到制作计算机游戏，桌面小部件，跨平台移动应用程序或在服务器端编写它（ 最常用于 node.js）将它与任何数据库连接 - 实现几乎无处不在的脚本语言。 因此，重要的是要了解 Javascript 的内部，更好和有效地使用它，这就是本文的内容。
 
-Javascript 生态系统变得比以往任何时候都复杂，并将继续变得更加复杂。构建现代 Web 应用程序所需的工具对 Webpack，Babel，ESLint，Mocha，Karma，Grunt 等等来说是压倒性的 - 我应该使用什么以及哪些工具正在做什么？ 我找到了这个网络漫画，它完美地展示了当今 Web 开发者的挣扎。
+Javascript 生态系统变得比以往任何时候都复杂，并将继续变得更加复杂。构建现代 Web 应用程序所需的工具 Webpack，Babel，ESLint，Mocha，Karma，Grunt 等等都是压倒性的 - 我应该使用什么以及哪些工具正在做什么？ 我找到了这个网络漫画，它完美地展示了当今 Web 开发者的挣扎。
 
 ![Javascript Fatigue — What it feels like to learn Javascript](https://cdn-images-1.medium.com/max/1600/1*1akEKXC95jhmIudAayITPA.png)
 
-<center>Javascript Fatigue — What it feels like to learn Javascript</center>
+<center>Javascript的疲劳  — 学习Javascript的感受</center>
 
 所有这些，每个 Javascript 开发者在深入使用市面上的任何框架或库之前，所需要做的是先了解所有这些的底层基本原理。大多数 JS 开发者可能都听说过 V8 这个术语，即 Chrome 的运行时环境，但有些人甚至可能不知道这意味着什么，这是做什么的。我最初作为开发人员的职业生涯的第一年，对所有这些花哨的术语都知之甚少，因为那时更多的是关于怎么让工作先完成。但这并不能满足我对 Javascript 如何能够完成所有这些工作的好奇心。我决定深入挖掘，围绕谷歌搜索，并发现了一些好的博客文章，包括 [Philip Roberts](https://twitter.com/philip_roberts) 在 JSConf 上关于[事件循环](https://www.youtube.com/watch?v=8aGhZQkoFbQ)的精彩演讲，所以我决定总结我的学习并分享它。由于有很多事情需要了解，我将文章分为两部分。本部分将介绍常用术语，第二部分介绍所有术语之间的联系。
 
@@ -26,7 +26,7 @@ Javascript 是单线程单一并发语言，这意味着它一次只能处理一
 </div>
 <center>JS调用栈可视化</center>
 
-当我们运行上面的文件时，我们首先查找将启动所有执行的 main 函数。 在上面，它从`console.log(bar(6))`开始，它被推送到栈，它上面的下一帧包含了`bar`的参数和局部变量，`bar`再调用函数`foo`，`foo`被推送到栈的顶部，`foo`立即返回，因此弹出栈，然后弹出`bar`，最后弹出`控制台语句`打印输出。 所有这些都是瞬间（毫秒）完成的。
+当我们运行上面的文件时，我们首先查找将启动所有执行的 main 函数。 在上面，从`console.log(bar(6))`开始，它被推送到栈，它上面的下一帧包含了`bar`的参数和局部变量，`bar`再调用函数`foo`，`foo`被推送到栈的顶部，`foo`立即返回，因此弹出栈，然后弹出`bar`，最后弹出`控制台语句`打印输出。 所有这些都是瞬间（毫秒）完成的。
 
 你一定在浏览器的控制台看到过长长的红色错误栈追踪，它基本上表示调用栈的当前状态和就像栈一样以从上到下的方式展示函数在哪里失败。看下图：
 
