@@ -1,5 +1,5 @@
 - [1. 调用栈](/call-stack/understanding-javascript-function-executions.md)
-  - [理解 JavaScript 方法执行 -- 调用栈、事件循环、任务以及其他](/call-stack/understanding-javascript-function-executions.md)
+  - [理解 JavaScript 函数执行 -- 调用栈、事件循环、任务以及其他](/call-stack/understanding-javascript-function-executions.md)
 - [2. 原始类型](/primitive-types/the-secrect-life-of-javascript-primitives.md)
   - [JavaScript 原始类型的秘密生命](/primitive-types/the-secrect-life-of-javascript-primitives.md)
 - [3. 值类型和引用类型](/value-types-and-reference-types/explaining-value-vs-reference.md)
