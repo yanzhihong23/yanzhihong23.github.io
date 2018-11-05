@@ -1,0 +1,23 @@
+{
+  "name": "33-js-concepts",
+  "version": "1.0.0",
+  "description": "33 js concepts",
+  "main": "index.html",
+  "scripts": {
+    "dev": "docsify serve .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yanzhihong23/yanzhihong23.github.io.git"
+  },
+  "keywords": [
+    "js"
+  ],
+  "author": "Hom Yan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yanzhihong23/yanzhihong23.github.io/issues"
+  },
+  "homepage": "https://github.com/yanzhihong23/yanzhihong23.github.io#readme"
+}

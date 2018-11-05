@@ -8,6 +8,8 @@
 
 对象是属性的聚合。属性可以引用对象或原始类型。原始类型是值，它们没有属性。
 
+> 原始类型也叫做基元类型
+
 JavaScript 中有 5 种原始类型: `undefined`、`null`、`boolean`、`string`和`number`，其他的都是对象。原始类型`boolean`、`string`和`number`可以由它们的对象对应项包装。这些对象分别是`Boolean`、`String`和`Number`构造函数的实例。
 
 ```javascript
