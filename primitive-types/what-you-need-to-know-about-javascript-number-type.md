@@ -44,9 +44,9 @@ for (var i = 1; 1 / i > 0; i++) {
 
 ![](https://cdn-images-1.medium.com/max/1600/1*SnYf-ofdeR3Fe-pbU341cg.png)
 
-有趣的是，这中行为经常归因于 JavaScript，实际上任一使用浮点格式作为数字类型的语言都有同样的问题。这意味着，如果你在 Java 或 C 里使用`float`或`double`，将会看到同样的结果。另一个有趣的点是，`0.1+0.2`的结果并不是浏览器控制台上看到的`0.30000000000000004`，实际上是`0.3000000000000000444089209850062616169452667236328125`。
+有趣的是，这种行为经常归因于 JavaScript，实际上任一使用浮点格式作为数字类型的语言都有同样的问题。这意味着，如果你在 Java 或 C 里使用`float`或`double`，将会看到同样的结果。另一个有趣的点是，`0.1+0.2`的结果并不是浏览器控制台上看到的`0.30000000000000004`，实际上是`0.3000000000000000444089209850062616169452667236328125`。
 
-这篇文章我将解释浮点数的工作原理，更深入的看下`for`循环以及上面提到的`0.1+0.2`的例子。
+这篇文章我将解释浮点数的工作原理，更深入的探索`for`循环以及上面提到的`0.1+0.2`的例子。
 
 > 值得一提的是 BigInt，它是 JavaScript 中一个新的数字基元，可以表示任意精度的整数。 使用`BigInt`，您可以安全地存储和操作大整数，甚至超出 `Number` 的安全整数限制。 它于今年(2016)在 [V8](https://v8.dev/blog/bigint) 中推出，并在 Chrome 67+和 Node v10.4.0 +中得到支持。 你可以在[这里](https://developers.google.com/web/updates/2018/05/bigint)读更多关于它的内容。
 
@@ -56,7 +56,7 @@ for (var i = 1; 1 / i > 0; i++) {
 
 <center><span style="font-size:30px;color:#42b983">significant</span> <span style="font-size: 20px;color:#666">x</span> <span style="font-size: 30px;color:#e96900">base</span><sup style="font-size: 18px;color:#22a2c9">exponent</sup> </center>
 
-`significand`(有效数)显示有效位数。通常也被称作尾数或精度。0 不被认为是有效的，它们只是占位。`base`指定数字系统基数，例如：`10`代表十进制，`2`代表二进制。 `exponent`(指数)定义小数点必须向左或向右移动多少个位置才能获得原始数字。
+`significand`(有效数)显示有效位数，通常也被称作尾数或精度。0 不被认为是有效的，它们只是占位。`base`指定数字系统基数，例如：`10`代表十进制，`2`代表二进制。 `exponent`(指数)定义小数点必须向左或向右移动多少个位置才能获得原始数字。
 
 任何数字都可以用科学记数法来表示。例如，数字`2`的十进制和二进制可以这样表示：
 
@@ -188,8 +188,166 @@ function to64bitFloat(number) {
 
 ### 用浮点格式表示 0.1 和 0.2
 
+我们来看下`0.1`在浮点格式吓的位模式。我们要做的第一件事就是把`0.1`转换为二进制，这可以使用乘以 2 的算法来完成。在我的文章[十进制二进制转换算法]()里解释过这个机制。如果我们把`0.1`转换为二进制，我们将得到一个无线的分数：
+
+<div style="text-align:center">
+  <img src="https://cdn-images-1.medium.com/max/1600/1*47litx2SPldE4_bhytk-ug.png">
+</div>
+
+下一步就是用标准科学记数法来表示这个数：
+
+<div style="text-align:center">
+  <img src="https://cdn-images-1.medium.com/max/1600/1*qEBApVomEABGVK4eXh09wA.png">
+</div>
+
+由于尾数只有 52 位，我们需要把小数点后面的无线数字舍入为 52 位。
+
+<div style="text-align:center">
+  <img src="https://cdn-images-1.medium.com/max/1600/1*E1aUp_0BuTREWdtUquhulA.png">
+</div>
+
+使用 IEEE-754 标准定义的舍入规则，我的文章[二进制舍入](https://medium.com/@maximus.koretskyi/how-to-round-binary-fractions-625c8fa3a1af#.gj8rdmqul)解释过，我们需要把这个数舍入为：
+
+<div style="text-align:center">
+  <img src="https://cdn-images-1.medium.com/max/1600/1*3c2yLvBN5zeQdrVp74-GNg.png">
+</div>
+
+剩下的最后一件事就是计算指数的偏移二进制表示：
+
+<div style="text-align:center;font-size:24px">
+  K = 2<sup>11-1</sup> - 1 = 1023 <br>
+  -4 + 1023 = 1019<sub>10</sub> <br>
+  1019<sub>10</sub> = 01111111011<sub>2</sub>
+</div>
+
+当放入浮点格式的时候，数字`0.1`就有了下面的位模式：
+
+<div style="text-align:center">
+  <img src="https://cdn-images-1.medium.com/max/1600/1*kx17MFmx0gpX_j8LLYp1uA.png">
+</div>
+
+我鼓励你自己计算一下`0.2`的浮点表示。你应该会得到下面的科学记数和二进制：
+
+![](https://cdn-images-1.medium.com/max/1600/1*fLRp3gdoDoUbXJ-Fkroo-Q.png)
+
 ### 计算 0.1 + 0.2 的结果
+
+如果我们把数字的浮点格式转换为科学格式，我们将得到：
+
+<div style="text-align:center;font-size:22px">
+  0.1<sub>10</sub> ≈ 1.1001100110011001100110011001100110011001100110011010 · 2<sup>-4</sup> <br>
+  0.2<sub>10</sub> ≈ 1.1001100110011001100110011001100110011001100110011010 · 2<sup>-3</sup>
+</div>
+
+要把两数相加，它们需要有一样的指数。规则说明我们需要把小的指数调整为更大的。所以，我们来把指数为`-4`的第一个数调整为像指数为`-3`的第二个数：
+
+<div style="text-align:center;font-size:22px">
+  0.1<sub>10</sub> ≈ 0.11001100110011001100110011001100110011001100110011010 · 2<sup>-3</sup>
+</div>
+
+现在把两数相加：
+
+![](https://cdn-images-1.medium.com/max/1600/1*uS64AitPYwcx_MhF9IVcZw.png)
+
+现在，把计算结果存为浮点格式，那么我们需要格式化这个结果，必要时做舍入和用偏移二进制计算指数。
+
+![](https://cdn-images-1.medium.com/max/1600/1*FUwRm1QN4oMrvxdYuTQcSw.png)
+
+归一化数正好落在舍入选项之间，所以我们采用打破平局的规则，向**上**舍入到偶数。这给出了以下归一化科学形式的结果数字:
+
+<div style="text-align:center">
+  <img src="https://cdn-images-1.medium.com/max/1600/1*I2wM8yj42guOgiurlplCcw.png">
+</div>
+
+当我们再转换为浮点格式存储的时候，就有了下面的位模式：
+
+<center style="font-size:22px">0 01111111101 0011001100110011001100110011001100110011001100110100</center>
+
+**当你执行表达式`0.1+0.2`时，这正是存储的位模式**。要得到它，计算机需要做 3 次舍入，即数字本身各一次，第三次是它们的和。当存储简单的`0.3`时，计算机只做了一次舍入。**舍入操作导致了`0.1+0.2`和单独`0.3`存储的位模式的不同**。当 JavaScript 执行比较语句 `0.1+0.2 === 0.3`时，比较的是它们的位模式，由于它们位模式的不同所以返回的结果是`false`。**如果存在这样的格式，即使对于舍入，位模式也是相等的，0.1 + 0.2 === 0.3 将评估为`true`，而不管 0.1 和 0.2 在二进制中不是有限可表示的事实。**
+
+试下用我上面展示的 `to64bitFloat(0.3)`看下数字`0.3`的位模式。这个模式将会和我们上面计算`0.1+0.2`的结果是不一样的。
+如果你想知道十进制数的存储位表示，把位组装为指数为 0 的科学形式，然后再转换为十进制数。那么`0.1+0.2`实际存储的十进制数是`0.3000000000000000444089209850062616169452667236328125` 而`0.3`则是`0.299999999999999988897769753748434595763683319091796875`。
 
 ## 为什么`for`循环永远不会停下
 
+理解`for`循环永远不会停下的关键在于数字`9007199254740991`。我们来看下这个数字有啥特殊之处。
+
+### Number.MAX_SAFE_INTEGER
+
+如果你在控制台输入 Number.MAX_SAFE_INTEGER，就会得到我们的关键数字 `9007199254740991`。这个数字这么特别在于它有自己的常量？下面是[ECMAScript 语言规范](https://www.ecma-international.org/ecma-262/6.0/#sec-number.max_safe_integer)对它的描述：
+
+> Number.MAX_SAFE_INTEGER 的值是最大的整数 n，使得**n**和**n + 1**都可以精确地表示为 Number 值。 Number.MAX_SAFE_INTEGER 的值是**9007199254740991**（2⁵³-1）。
+
+还有[MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER)上的解释：
+
+> 安全存储的意思是指能够准确区分两个不相同的值，例如 Number.MAX_SAFE_INTEGER + 1 === Number.MAX_SAFE_INTEGER + 2 将得到 true 的结果，而这在数学上是错误的。
+
+要明白的第一点是这并不是最大可以表示的整数。例如，数字`9007199254740994`就可以安全的表示`MAX_SAFE_INTEGER + 3`。通过常量`Number.MAX_VALUE`可以看到最大的可表示的数字，而它是`1.7976931348623157e+308`。可能会让你感到意外的是，有些在`MAX_SAFE_INTEGER`和`MAX_VALUE`的数字不能被表示出来。实际上，在`MAX_SAFE_INTEGER`和`MAX_SAFE_INTEGER + 3`之间有个整数不呢给你被表示，这个数是`9007199254740993`。如果你在控制台输入它，你将看到它被解析为`9007199254740992`。因此，JavaScript 不是使用原始数字，而是将其转换为比原始数字少 1 的数字。
+
+要明白为什么会这样，我们先来看下`9007199254740991 (MAX_SAFE_INTEGER)`在浮点形式里的位表示：
+
+<center style="font-size:22px">0 10000110011 1111111111111111111111111111111111111111111111111111</center>
+
+当转换为科学形式就有了下面的表示：
+
+<div style="text-align:center">
+  <img src="https://cdn-images-1.medium.com/max/1600/1*P60vgnZwLYwU1UbaA2pHsg.png">
+</div>
+
+现在，像右移动小数点 52 位来取到指数为 0 的二进制数：
+
+<div style="text-align:center">
+  <img src="https://cdn-images-1.medium.com/max/1600/1*uDFvnqHBM1-vwao77rjkeQ.png">
+</div>
+
+所以，为了存储`MAX_SAFE_INTEGER`，我们用尽了指数为 52 的尾数里的所有空间。由于所有空间都被使用了，为了存储下一个数字，唯一的选项只能是把指数加`1`，变大到`53`。对于指数`53`，我们向右移动小数点`53`位。但是由于尾数里我们只有`52`个数字，我们再末尾添加了`0`。对于指数`54`，就添加两个`0`。`55`就`3`个，以此类推。
+
+这暗示着什么呢？你可能自己已经猜到了。**由于所有大于`MAX_SAFE_INTEGER`的数字都将以 0 结尾，这样大于`MAX_SAFE_INTEGER`的奇数就无法用 64 位浮点表示。**为了能够存储一些，尾数就必须分配超过 52 位。来看下这个实例：
+
+<div style="text-align:center">
+  <img src="https://cdn-images-1.medium.com/max/1600/1*9WgZriHQa0yQZFQLWr-E_A.png">
+</div>
+
+你可以看到数字`9007199254740993`和`9007199254740995`无法通过`64位`浮点表示。如果你继续这个队列，你会看到有些偶数也无法表示，例如`9007199254740998`。随着指数的增加，无法被存储的数字显著增加。
+
+### 永不停止的循环
+
+我们再来看下`for`循环的例子：
+
+```javascript
+for (var i = 1; 1 / i > 0; i++) {
+  console.log('Count is: ' + i);
+}
+```
+
+永远都不会停下。开始的时候我提到过这是因为`1/i`的结果不是作为一个整数，而是一个浮点数。现在你知道了浮点数的工作原理和`Number.MAX_SAFE_INTEGER`，就不难理解为什么永远都不会停下了。
+
+要想让循环停下，计数器`i`就需要达到`Infinity`，这是由于`1/Infinity > 0`会解析为`false`。但这不可能发生。前面我已经解释了为什么有些整数无法存储和被舍入到最接近的偶数。那么，在我们的例子中，JavaScript 给计数器`i`不断加`1`直到`9007199254740993`，也就是`MAX_SAFE_INTEGER+2`。这是第一个无法被存储的整数，这样它就会被舍入成最接近的偶数`9007199254740992`。所以循环被卡在这个数字上。循环无法跳过这个数字，这样我们就得到了一个无限循环。
+
 ## 关于 NaN 和 Infinity 的一些话
+
+为了结束这篇文章，我决定对`NaN`和`Infinity`做个非常简短的解释。`NaN`代表`Not a Number`，它和`Infinity`是不一样的，虽然它们在浮点表示和浮点操作里都是作为真实数字来做特殊处理。它们的指数为`1024（11111111111）`而不是`Number.MAX_VALUE`，其指数为`1023（111111111101）`。
+
+由于`NaN`可以通过浮点表示，所以当你在浏览器输入`typeof NaN`得到`number`，就不会感到很惊讶了。它的指数位全部是`1`，尾数位有一个非零的数字：
+
+<center style="font-size:22px">0 11111111111 1000000000000000000000000000000000000000000000000000</center>
+
+有很多数学运算的结果都是`NaN`，比如 `0/0` 或者 `Math.sqrt(-4)`。JavaScript 里有些函数也会返回`NaN`。例如，把字符串作为`parseInt("s")`的参数时，`parseInt`会返回`NaN`。有趣的是，任何与`NaN`的比较运算都返回`false`。例如，下面的这些运算都返回`false`：
+
+```javascript
+NaN === NaN;
+NaN > NaN;
+NaN < NaN;
+
+NaN > 3;
+NaN < 3;
+NaN === 3;
+```
+
+`NaN`，也只有`NaN`，与自身相比较都不相等。JavaScript 有个`isNan()`函数可以用来判断一个值是否为`NaN`。
+
+`Infinity` 是另一个特例，在浮点里被设计来处理溢出和一些数学运算，比如 `1/0`。Infinity 被表示为指数位全为 1，尾数位全为 0：
+
+<center style="font-size:22px">0 11111111111 0000000000000000000000000000000000000000000000000000</center>
+
+对于正`Infinity`，它的符号位是 0，负`Infinity`是 1。这篇 MDN [文章](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Infinity)描述了一些结果是`Infinity`的运算。不像`NaN`，`Infinity`可以安全的用来比较。
