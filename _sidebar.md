@@ -1,37 +1,37 @@
-- [1. 调用栈](/call-stack/understanding-javascript-function-executions.md)
+- 1.调用栈
   - [理解 JavaScript 函数执行 -- 调用栈、事件循环、任务以及其他](/call-stack/understanding-javascript-function-executions.md)
-- [2. 原始类型](/primitive-types/the-secrect-life-of-javascript-primitives.md)
+- 2.原始类型
   - [JavaScript 原始类型的秘密生命](/primitive-types/the-secrect-life-of-javascript-primitives.md)
   - [你需要了解的 JavaScript Number 类型](/primitive-types/what-you-need-to-know-about-javascript-number-type.md)
-- [3. 值类型和引用类型](/value-types-and-reference-types/explaining-value-vs-reference.md)
+- 3.值类型和引用类型
   - [JavaScript 里的值和引用](/value-types-and-reference-types/explaining-value-vs-reference.md)
-- [4. 隐式、显式、标称、结构化以及鸭子类型](/)
-- [5. == vs === vs typeof](/)
-- [6. 函数作用域、块作用域以及词法作用域](/)
-- [7. 表达式 vs 声明](/)
-- [8. 立即执行函数、模块、命名空间](/)
-- [9. 消息队列和事件循环](/)
-- [10. setTimeout、setInterval 和 requestAnimationFrame](/)
-- [11. JavaScript 引擎](/)
-- [12. 按位操作符、类数组对象和类型化数组](/)
-- [13. DOM 和布局树](/)
-- [14. Factories 和 Classes](/)
-- [15. this、call、apply 以及 bind](/)
-- [16. new 与构造函数、instanceof 与实例](/)
-- [17. 原型继承和原型链](/)
-- [18. Object.create 和 Object.assign](/)
-- [19. map、reduce、filter](/)
-- [20. 纯函数、副作用和状态突变](/)
-- [21. 闭包](/)
-- [22. 高阶函数](/)
-- [23. 递归](/)
-- [24. 集合和生成器](/)
-- [25. Promises](/)
-- [26. async/await](/)
-- [27. 数据结构](/)
-- [28. 昂贵的操作和大 O 符号](/)
-- [29. 算法](/)
-- [30. 继承、多态性和代码重用](/)
-- [31. 设计模式](/)
-- [32. 偏函数应用、柯里化、compose、pipe](/)
-- [33. 代码整洁之道](/)
+- 4.隐式、显式、标称、结构化以及鸭子类型
+- 5.== vs === vs typeof
+- 6.函数作用域、块作用域以及词法作用域
+- 7.表达式 vs 声明
+- 8.立即执行函数、模块、命名空间
+- 9.消息队列和事件循环
+- 10.setTimeout、setInterval 和 requestAnimationFrame
+- 11.JavaScript 引擎
+- 12.按位操作符、类数组对象和类型化数组
+- 13.DOM 和布局树
+- 14.Factories 和 Classes
+- 15.this、call、apply 以及 bind
+- 16.new 与构造函数、instanceof 与实例
+- 17.原型继承和原型链
+- 18.Object.create 和 Object.assign
+- 19.map、reduce、filter
+- 20.纯函数、副作用和状态突变
+- 21.闭包
+- 22.高阶函数
+- 23.递归
+- 24.集合和生成器
+- 25.Promises
+- 26.async/await
+- 27.数据结构
+- 28.昂贵的操作和大 O 符号
+- 29.算法
+- 30.继承、多态性和代码重用
+- 31.设计模式
+- 32.偏函数应用、柯里化、compose、pipe
+- 33.代码整洁之道
