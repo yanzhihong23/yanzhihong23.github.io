@@ -4,8 +4,7 @@
   "description": "33 js concepts",
   "main": "index.html",
   "scripts": {
-    "dev": "docsify serve .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "serve": "docsify serve ."
   },
   "repository": {
     "type": "git",
