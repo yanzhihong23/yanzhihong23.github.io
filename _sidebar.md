@@ -6,8 +6,10 @@
 - 3.值类型和引用类型
   - [JavaScript 里的值和引用](/value-types-and-reference-types/explaining-value-vs-reference.md)
 - 4.隐式、显式、标称、结构化以及鸭子类型
-  - [JavaScript 类型转换](/type-coercion/javascript-type-coercion-explained.md)
+  - [JavaScript 类型强制转换](/type-coercion/javascript-type-coercion-explained.md)
 - 5.== vs === vs typeof
+  - [为什么在 JavaScript 中使用三重等号？](/==vs===vs-typeof/why-use-the-triple-equals-in-javascript.md)
+  - [在 JavaScript 种怎么更好的检查数据类型？](/==vs===vs-typeof/how-to-better-check-data-types-in-javscript.md)
 - 6.函数作用域、块作用域以及词法作用域
 - 7.表达式 vs 声明
 - 8.立即执行函数、模块、命名空间
