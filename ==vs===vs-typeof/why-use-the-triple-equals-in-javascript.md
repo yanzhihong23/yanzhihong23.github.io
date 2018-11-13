@@ -2,10 +2,10 @@
 
 [原文](https://www.impressivewebs.com/why-use-triple-equals-javascipt/)
 
-"判断两个变量是否相等是在编程里最重要的操作符之一" 这是[Nicholas Zakas](http://www.nczonline.net/)在他的书
-[JavaScript for Web Developers](http://www.amazon.com/Professional-JavaScript-Developers-Wrox-Programmer/dp/047022780X/)提到的。
+“判断两个变量是否相等是在编程里最重要的操作符之一” 这是 [Nicholas Zakas](http://www.nczonline.net/) 在他的书
+[JavaScript for Web Developers](http://www.amazon.com/Professional-JavaScript-Developers-Wrox-Programmer/dp/047022780X/) 提到的。
 
-换句话说，在你的脚本里你很可能有代码像这样：
+换句话说，在你的脚本里很可能会有像这样的代码：
 
 ```javascript
 if (x == y) {
@@ -29,7 +29,7 @@ if (x === y) {
 
 在一个使用双重等号操作符的比较里，如果相比较的两个东西是相等的，结果会返回`true`。但有一点很重要：如果被比较的是两个不同类型的值，那么类型强制转换就会发生。
 
-每一个 JavaScript 值都属于一个特定的『类型』。这些类型有：number, string, boolean, function 和 object。所以如果你尝试一个字符串和一个数值，在做比较之前浏览器将会把字符串转换为数值。类似的，如果你比较`true`或`false`和一个数值，`true`或`false`会各自被转换为`1`或`0`。
+每一个 JavaScript 值都属于一个特定的『类型』。这些类型有：number, string, boolean, function 和 object。所以如果你尝试比较一个字符串和一个数值，在做比较之前浏览器将会把字符串转换为数值。类似的，如果你比较`true`或`false`和一个数值，`true`或`false`会各自被转换为`1`或`0`。
 
 这将会带来不可预测的结果，看下下面的例子：
 
@@ -86,4 +86,4 @@ console.log(' ' !== 0); // true
 
 正如前面提到的，你可能早就只使用三重等号。在研究这篇文章时，对这个概念我自己还是学到了一些。
 
-我觉得最好的总结还是来自 Zakas, 在推荐一直使用严格相等之后，他说：『这有助于维护你代码里的数据类型』。
+我觉得最好的总结还是来自 Zakas, 在推荐一直使用严格相等之后，他说：“这有助于维护你代码里的数据类型”。
