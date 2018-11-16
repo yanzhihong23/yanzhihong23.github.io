@@ -12,6 +12,7 @@
   - [在 JavaScript 种怎么更好的检查数据类型？](/==vs===vs-typeof/how-to-better-check-data-types-in-javscript.md)
 - 6.函数作用域、块作用域以及词法作用域
 - 7.表达式 vs 声明
+  - [你所需要知道的关于 JavaScript 表达式、语句和表达式语句](/expression-vs-statement/expressions-statements-and-expression-statements.md)
 - 8.立即执行函数、模块、命名空间
 - 9.消息队列和事件循环
 - 10.setTimeout、setInterval 和 requestAnimationFrame
