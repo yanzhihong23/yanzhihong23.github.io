@@ -12,7 +12,7 @@
 
 {2+2} + 3 // 3
 
-{2+2} -3 // -3
+{2+2} - 3 // -3
 ```
 
 JavaScript 有 2 种主要的句法类目：
@@ -188,3 +188,176 @@ if (true){
   function () {} // 语法错误: 函数语句需要一个名称
 }
 ```
+
+## 表达式转为语句：表达式语句
+
+Javascript 有什么简单直接的地方吗 😃
+
+```javascript
+2 + 2; //表达式语句
+foo(); //表达式语句
+```
+
+表达式转为表达式语句，你只要在行末添加一个分号或着允许[自动插入分号(automatic semi-colon insertion)](https://dev.to/promhize/what-you-need-to-know-about-javascripts-automatic-semi-colon-insertion-78a) 来完成这个工作。 `2+2`本身是一个表达式，但一整行就是一个语句。
+
+<!--prettier-ignore-->
+```javascript
+2+2 // 表达式
+
+foo(2+2) // 所以你可以在任何需要值的地方使用它
+
+true ? 2+2 : 1 + 1
+
+function foo () {return 2+2}
+
+
+2+2; // 表达式语句
+foo(2+2;) // 语法错误
+```
+
+## 分号和逗号
+
+使用分号，你可以把多个语句放在同一行
+
+<!--prettier-ignore-->
+```javascript
+const a; function foo () {}; const b = 2
+```
+
+逗号让你可以连接多个表达式，并只返回最后一个表达式
+
+<!--prettier-ignore-->
+```javascript
+console.log( (1+2,3,4) ) //4
+
+console.log( (2, 9/3, function () {}) ) // function (){}
+
+console.log( (3, true ? 2+2 : 1+1) ) // 4
+```
+
+> 通过`圆括号()`可以告诉 JavaScript 引擎这里期望得到的是一个值，没有了圆括号，每个表达式都会被当作是 console.log 的参数。
+
+<!--prettier-ignore-->
+```javascript
+function foo () {return 1, 2, 3, 4}
+foo() //4
+```
+
+所有表达式将从左到右求值，最后一个表达式将返回。
+
+## IIFEs (立即调用的函数表达式)
+
+一个匿名函数可以是一个表达式，如果我们把它用在一个期望为值得地方，这意味着我们可以用圆括号来告诉 JavaScript 期望得到一个值，我们可以把匿名函数当作值传进去。
+
+<!--prettier-ignore-->
+```javascript
+function () {}
+```
+
+上面这段代码是无效的，下面这段才是有效的
+
+<!--prettier-ignore-->
+```javascript
+(function () {}) // this returns function () {}
+```
+
+如果把一个匿名函数放在圆括号内立即返回了同样的匿名函数，这意味着我们可以直接调用，像这样：
+
+<!--prettier-ignore-->
+```javascript
+(function () {
+  //do something
+})()
+```
+
+所以，这些都是可以的
+
+<!--prettier-ignore-->
+```javascript
+(function () {
+  console.log("immediately invoke anonymous function call")
+})() // "immediately invoke anonymous function call"
+
+(function () {
+  return 3
+})() // 3
+
+console.log((function () {
+  return 3
+})()) // 3
+
+// 你可以传一个参数给它
+(function (a) {
+  return a
+})("I'm an argument") // I'm an argument
+```
+
+## 对象字面量与块语句
+
+> 旁注：这是有效的
+
+<!--prettier-ignore-->
+```javascript
+r: 2+2 // 有效
+
+foo()
+
+const foo = () => {}
+```
+
+上面这一系列在全局作用域下的语句会被解析为有效的 JavaScript 并执行。`r`通常称为标签，在跳出循环的地方非常有用。例子：
+
+<!--prettier-ignore-->
+```javascript
+loop: {
+  for (const i = 0; i < 2; i++) {
+    for (const n = 0; n <2; n++) {
+      break loop // 跳出最外层的循环，停止整个循环
+    }
+  }
+}
+```
+
+你可以给任何表达式或表达式语句添加标签，注意这并不是在创建一个标签变量：
+
+<!--prettier-ignore-->
+```javascript
+lab: function a () {}
+console.log(lab) //ReferenceError: lab is not defined
+```
+
+通过`花括号{}`你可以把表达式语句和语句分组，所以你可以这样写
+
+<!--prettier-ignore-->
+```javascript
+{var a = "b"; func(); 2+2} // 4
+```
+
+如果你把上面的代码粘贴到浏览器的控制台，它将会返回 4 ，如果你执行`console.log(a)`，你就会得到字符串`'b'`。你可以称之为块语句，这是与你习惯的对象字面量不同的地方。
+
+<!--prettier-ignore-->
+```javascript
+console.log({a: 'b'}) // {a: 'b'}
+
+console.log({var a = "b", func(), 2+2}) // SyntaxError
+
+const obj = {var a = "b", func(), 2+2} // SyntaxError
+```
+
+你不能把块语句作为一个值或表达式来使用，因为 console.log 是一个函数，它不能接受一个语句来作为一个参数，虽然可以接受一个对象字面量。
+我希望你理解了我上面解释的所有内容，因为下面这段代码可能会让你很困惑。
+
+<!--prettier-ignore-->
+```javascript
+{} + 1 //1
+
+{2} + 2 // 2
+
+{2+2} + 3 // 3
+
+{2+2} -3 // -3
+```
+
+你可能预计它会抛出一个语法错误或是分别返回 1,4,7。记住语句是不应该返回任何东西的，因为它们不能被当作值来使用。相对于抛出一个错误，JavaScript 更倾向于把`+`操作符的操作对象转换为一个数值或字符串，如果无法转换才抛出错误。所以无论块语句返回什么，都会被隐式强制转换为`0`来作为操作对象。
+
+唷！如果你都读完了，那你就是真正的 MVP。这大概就是所有你需要了解的关于表达式、语句以及表达式语句。
