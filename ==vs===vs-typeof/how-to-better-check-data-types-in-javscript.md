@@ -1,5 +1,7 @@
 # 在 JavaScript 种怎么更好的检查数据类型？
 
+<i>[How to better check data types in javascript](https://webbjocke.com/javascript-check-data-types/) by `Webbjocke` on 2016-08-20</i>
+
 在 JavaScript 种检测数据类型并不总是那么容易。语言本身提供了一个很直接的方式叫做 tyoeof。Typeof 返回一个字符串表示一个数据的类型，对于一个对象 "object"会被返回，一个字符串"string"会被返回。
 
 然后 JavaScript 的数据类型，typeof 操作符并不是完美的。比如对于数组和 null 都是返回"object"，NaN 和 Infinity 都是返回"number"。要检查任何不仅仅是原始数据类型的数据，要知道它到底是一个数值、字符串、null、一个数组或是一个真实的对象，就需要一点更多的逻辑。

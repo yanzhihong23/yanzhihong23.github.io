@@ -1,6 +1,6 @@
 # JavaScript 类型强制转换
 
-[原文](https://medium.freecodecamp.org/js-type-coercion-explained-27ba3d9a2839)
+[JavaScript type coercion explained](https://medium.freecodecamp.org/js-type-coercion-explained-27ba3d9a2839) by `Alexey Samoshkin` on 2018-01-18
 
 ![weird](https://cdn-images-1.medium.com/max/2000/1*7awmfn1lq2McPz8ggapndw.png)
 

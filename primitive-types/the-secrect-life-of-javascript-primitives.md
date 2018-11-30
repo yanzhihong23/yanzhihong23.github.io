@@ -1,6 +1,6 @@
 # JavaScript 原始类型的秘密生命
 
-[原文](https://javascriptweblog.wordpress.com/2010/09/27/the-secret-life-of-javascript-primitives/)
+[The Secret Life of JavaScript Primitives](https://javascriptweblog.wordpress.com/2010/09/27/the-secret-life-of-javascript-primitives/) by `Angus Croll` on 2010-09-27
 
 您可能不知道，但是在 JavaScript 中，每当您与字符串、数字或布尔原始类型交互时，您就会进入一个隐藏的对象阴影和强制转换的世界。所以，掸掉你的夏洛克·福尔摩斯服装，继续读下去吧……
 

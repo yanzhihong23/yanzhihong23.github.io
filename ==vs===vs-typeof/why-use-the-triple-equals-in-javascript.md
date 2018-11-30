@@ -1,6 +1,6 @@
 # 为什么在 JavaScript 中使用三重等号？
 
-[原文](https://www.impressivewebs.com/why-use-triple-equals-javascipt/)
+[Why Use the Triple-Equals Operator in JavaScript?](https://www.impressivewebs.com/why-use-triple-equals-javascipt/) by `Louis Lazaris` on 2013-03-01
 
 “判断两个变量是否相等是在编程里最重要的操作符之一” 这是 [Nicholas Zakas](http://www.nczonline.net/) 在他的书
 [JavaScript for Web Developers](http://www.amazon.com/Professional-JavaScript-Developers-Wrox-Programmer/dp/047022780X/) 提到的。

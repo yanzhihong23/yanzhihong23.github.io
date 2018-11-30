@@ -1,6 +1,6 @@
 # 你需要了解的 JavaScript Number 类型
 
-[原文](https://medium.com/dailyjs/javascripts-number-type-8d59199db1b6)
+[Here is what you need to know about JavaScript’s Number type](https://medium.com/dailyjs/javascripts-number-type-8d59199db1b6) by `Max Koretskyi, aka Wizard` on 2016-10-13
 
 <div style="text-align:center">
  <img src="https://cdn-images-1.medium.com/max/1600/1*aGnwvStsrH3OnrwdlHvsgQ.jpeg">

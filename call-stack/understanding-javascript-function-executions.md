@@ -1,6 +1,6 @@
 # 理解 JavaScript 函数执行 -- 调用栈、事件循环、任务以及其他
 
-[原文](https://medium.com/@gaurav.pandvia/understanding-javascript-function-executions-tasks-event-loop-call-stack-more-part-1-5683dea1f5ec)
+[Understanding Javascript Function Executions — Call Stack, Event Loop , Tasks & more](https://medium.com/@gaurav.pandvia/understanding-javascript-function-executions-tasks-event-loop-call-stack-more-part-1-5683dea1f5ec) by `Gaurav Pandvia` on 2017-05-29
 
 Web 开发人员或前端工程师(我们更喜欢的称呼)，现在可以做任何事情，从充当浏览器内部的交互源，到制作计算机游戏，桌面小部件，跨平台移动应用程序或在服务器端编写它（ 最常用于 node.js）将它与任何数据库连接 - 实现几乎无处不在的脚本语言。 因此，重要的是要了解 Javascript 的内部，更好和有效地使用它，这就是本文的内容。
 

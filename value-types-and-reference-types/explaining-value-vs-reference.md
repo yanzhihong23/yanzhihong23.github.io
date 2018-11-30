@@ -1,6 +1,6 @@
 # JavaScript 里的值和引用
 
-[原文](https://codeburst.io/explaining-value-vs-reference-in-javascript-647a975e12a0)
+[Explaining Value vs. Reference in Javascript](https://codeburst.io/explaining-value-vs-reference-in-javascript-647a975e12a0) by `Arnav Aggarwal` on 2017-07-02
 
 JavaScript 有 5 种数据类型是通过`值`传递：`Boolean`, `null`, `undefined`, `String` 以及 `Number`。我们称这些为原始类型。
 
@@ -16,7 +16,7 @@ var y = 'abc';
 var z = null;
 ```
 
-`x`包含`10`, `y`包含`'abc'`。为了巩固这个想法，我们用一张图表来模拟变量在内存中的存储。   
+`x`包含`10`, `y`包含`'abc'`。为了巩固这个想法，我们用一张图表来模拟变量在内存中的存储。  
 <br>
 
 | 变量 | 值    |
@@ -34,6 +34,7 @@ var a = x;
 var b = y;
 console.log(x, y, a, b); // -> 10, 'abc', 10, 'abc'
 ```
+
 `a`和`x`现在都包含`10`。`b`和`y`现在都包含`'abc'`。它们是分开的，因为值本身被复制了。  
 <br>
 
@@ -57,6 +58,7 @@ console.log(x, y, a, b); // -> 10, 'abc', 5, 'def'
 ```
 
 ## 对象
+
 这将会感到困惑，但容忍我，读完它。一旦你通过它，它会看起来很简单。
 
 分配了非原始值的变量将被赋予对该值的引用。 该引用指向对象在内存中的位置。 变量实际上不包含该值。
@@ -71,37 +73,40 @@ console.log(x, y, a, b); // -> 10, 'abc', 5, 'def'
 var arr = [];
 arr.push(1);
 ```
-内存中上面第1行和第2行的表示是：
 
-第1行  
+内存中上面第 1 行和第 2 行的表示是：
+
+第 1 行
 
 | 变量 | 值     |     | 地址 | 对象 |
 | ---- | ------ | --- | ---- | ---- |
 | arr  | <#001> |     | #001 | []   |
 
-第2行  
+第 2 行
 
-| 变量 | 值  |  | 地址 | 对象 |
-| ---- | --- |-- |---- | ---- |
-| arr  | <#001> | |#001 | [1]  |
+| 变量 | 值     |     | 地址 | 对象 |
+| ---- | ------ | --- | ---- | ---- |
+| arr  | <#001> |     | #001 | [1]  |
 
-注意变量`arr`所包含的值、地址都是不变的。改变的是内存里的数组。当我们对`arr`进行操作时，比如推送一个值，JavaScript引擎会转到`arr`在内存中的位置并使用存储在那的信息。
+注意变量`arr`所包含的值、地址都是不变的。改变的是内存里的数组。当我们对`arr`进行操作时，比如推送一个值，JavaScript 引擎会转到`arr`在内存中的位置并使用存储在那的信息。
 
 ## 按引用分配
+
 当使用`=`将引用类型值（一个对象）复制到另一个变量时，实际上复制的是该值的地址，就像它是一个原始类型一样。 对象是通过引用而不是按值复制。
 
 ```javascript
 var reference = [1];
 var refCopy = reference;
 ```
-上面的代码在内存中看起来就像这样  
+
+上面的代码在内存中看起来就像这样
 
 | 变量      | 值     |     | 地址 | 对象 |
 | --------- | ------ | --- | ---- | ---- |
 | reference | <#001> |     | #001 | [1]  |
 | refCopy   | <#001> |
 
-每个变量现在都包含对同一数组的引用。这意味着如果我们改变`reference`，`refCopy`将看到这些变更：  
+每个变量现在都包含对同一数组的引用。这意味着如果我们改变`reference`，`refCopy`将看到这些变更：
 
 ```javascript
 reference.push(2);
@@ -122,31 +127,33 @@ console.log(reference, refCopy); // -> [1, 2], [1, 2]
 ```javascript
 var obj = { first: 'reference' };
 ```
-在内存中  
+
+在内存中
 
 | 变量 | 值     |     | 地址 | 对象                   |
 | ---- | ------ | --- | ---- | ---------------------- |
 | obj  | <#234> |     | #234 | { first: 'reference' } |
 
-当我们再加一行  
+当我们再加一行
 
 ```javascript
 var obj = { first: 'reference' };
-obj = { second: 'ref2' }
+obj = { second: 'ref2' };
 ```
-`obj`存储的地址改变了。第一个对象仍然存在于内存中，下一个对象也是如此:    
- <br> 
+
+`obj`存储的地址改变了。第一个对象仍然存在于内存中，下一个对象也是如此:  
+ <br>
 
 | 变量 | 值     |     | 地址 | 对象                   |
 | ---- | ------ | --- | ---- | ---------------------- |
 | obj  | <#678> |     | #234 | { first: 'reference' } |
 |      |        |     | #678 | { second: 'ref2' }     |
 
-当没有对剩余对象的引用时，就像上面的地址 `#234`，JavaScript引擎就会执行垃圾回收。这意味着开发者失去了所有对该对象的引用并且再也无法使用该对象，这样引擎就可以安全地从内存中删除它。在这种情况下，对象`{first：'reference'}`不再可访问，并且可供引擎用于垃圾收集。
+当没有对剩余对象的引用时，就像上面的地址 `#234`，JavaScript 引擎就会执行垃圾回收。这意味着开发者失去了所有对该对象的引用并且再也无法使用该对象，这样引擎就可以安全地从内存中删除它。在这种情况下，对象`{first：'reference'}`不再可访问，并且可供引擎用于垃圾收集。
 
 ## == 和 ===
 
-当在引用类型变量上使用相等运算符==和===时，它们会检查引用。 如果变量包含对同一项的引用，则比较结果为true。
+当在引用类型变量上使用相等运算符==和===时，它们会检查引用。 如果变量包含对同一项的引用，则比较结果为 true。
 
 ```javascript
 var arrRef = [’Hi!’];
@@ -169,6 +176,7 @@ var arr1str = JSON.stringify(arr1);
 var arr2str = JSON.stringify(arr2);
 console.log(arr1str === arr2str); // true
 ```
+
 另一种选择是递归循环遍历对象并确保每个属性都相同。
 
 ## 通过函数传递参数
@@ -179,13 +187,13 @@ console.log(arr1str === arr2str); // true
 var hundred = 100;
 var two = 2;
 function multiply(x, y) {
-    // PAUSE
-    return x * y;
+  // PAUSE
+  return x * y;
 }
 var twoHundred = multiply(hundred, two);
 ```
 
-在上面的例子中，我们给`hundred`赋值`100`。当我们把它传递给`multiply`，变量`x`获得该值`100`。值的复制就像使用`=`操作符。并且`hundred`的值没有受到影响。下面是PAUSE注释行中内存的快照。  
+在上面的例子中，我们给`hundred`赋值`100`。当我们把它传递给`multiply`，变量`x`获得该值`100`。值的复制就像使用`=`操作符。并且`hundred`的值没有受到影响。下面是 PAUSE 注释行中内存的快照。
 
 | 变量     | 值     |     | 地址 | 对象                 |
 | -------- | ------ | --- | ---- | -------------------- |
@@ -207,30 +215,31 @@ var twoHundred = multiply(hundred, two);
 
 ```javascript
 function changeAgeImpure(person) {
-    person.age = 25;
-    return person;
+  person.age = 25;
+  return person;
 }
 var alex = {
-    name: 'Alex',
-    age: 30
+  name: 'Alex',
+  age: 30
 };
 var changedAlex = changeAgeImpure(alex);
 console.log(alex); // -> { name: 'Alex', age: 25 }
 console.log(changedAlex); // -> { name: 'Alex', age: 25 }
 ```
-这个非纯函数接受一个对象，并把对象的属性`age`改为25。因为直接作用于给定的引用，它直接改变了对象`alex`。当它返回`person`对象时，它返回的正是传进来的同一个对象。`alex`和`alexChanged`包含同一个引用，所以返回`person`变量并将引用存储在新变量中是多余的。
+
+这个非纯函数接受一个对象，并把对象的属性`age`改为 25。因为直接作用于给定的引用，它直接改变了对象`alex`。当它返回`person`对象时，它返回的正是传进来的同一个对象。`alex`和`alexChanged`包含同一个引用，所以返回`person`变量并将引用存储在新变量中是多余的。
 
 我们再来看一下纯函数。
 
 ```javascript
 function changeAgePure(person) {
-    var newPersonObj = JSON.parse(JSON.stringify(person));
-    newPersonObj.age = 25;
-    return newPersonObj;
+  var newPersonObj = JSON.parse(JSON.stringify(person));
+  newPersonObj.age = 25;
+  return newPersonObj;
 }
 var alex = {
-    name: 'Alex',
-    age: 30
+  name: 'Alex',
+  age: 30
 };
 var alexChanged = changeAgePure(alex);
 console.log(alex); // -> { name: 'Alex', age: 30 }
@@ -242,21 +251,22 @@ console.log(alexChanged); // -> { name: 'Alex', age: 25 }
 当我们改变新对象的`age`属性，原始对象不受影响。这个函数是纯的，它不会影响外部作用域的任何对象，甚至传进来的对象。新的对象需要返回并且存储在新的变量上，不然一旦函数返回了，新的对象就会被垃圾回收，因为对象不在作用域内了。
 
 ## 自我测试
+
 值与引用是一个经常在编码面试中测试的概念。自己试下下面会打印什么。
 
 ```javascript
 function changeAgeAndReference(person) {
-    person.age = 25;
-    person = {
-        name: 'John',
-        age: 50
-    };
-    
-    return person;
+  person.age = 25;
+  person = {
+    name: 'John',
+    age: 50
+  };
+
+  return person;
 }
 var personObj1 = {
-    name: 'Alex',
-    age: 30
+  name: 'Alex',
+  age: 30
 };
 var personObj2 = changeAgeAndReference(personObj1);
 console.log(personObj1); // -> ?
@@ -269,13 +279,15 @@ console.log(personObj2); // -> ?
 console.log(personObj1); // -> { name: 'Alex', age: 25 }
 console.log(personObj2); // -> { name: 'John', age: 50 }
 ```
+
 请记住，通过函数参数赋值与使用`=`赋值基本相同。 函数中的变量`person`包含对`personObj1`对象的引用，因此最初它直接作用于该对象。 一旦我们将`person`重新分配给新对象，它就会停止影响原始对象。
 
-上述代码块的等效代码：  
+上述代码块的等效代码：
+
 ```javascript
 var personObj1 = {
-    name: 'Alex',
-    age: 30
+  name: 'Alex',
+  age: 30
 };
 var person = personObj1;
 person.age = 25;
@@ -287,4 +299,5 @@ var personObj2 = person;
 console.log(personObj1); // -> { name: 'Alex', age: 25 }
 console.log(personObj2); // -> { name: 'John', age: '50' }
 ```
+
 唯一的区别是我们使用了函数，函数一旦返回，`person`对象就再也不在作用域内了。
