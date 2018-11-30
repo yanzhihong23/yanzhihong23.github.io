@@ -14,7 +14,8 @@
   - [理解 JavaScript 里的作用域和上下文](/function-block-lexical-scope/understanding-scope-and-context-in-javascript.md)
 - 7.表达式 vs 语句
   - [你所需要知道的关于 JavaScript 表达式、语句和表达式语句](/expression-vs-statement/expressions-statements-and-expression-statements.md)
-- 8.立即执行函数、模块、命名空间
+- 8.IIFE、模块、命名空间
+  - [掌握立即调用函数表达式(IIFE)](/IIFE-modules-namespaces/mastering-IIFE.md)
 - 9.消息队列和事件循环
 - 10.setTimeout、setInterval 和 requestAnimationFrame
 - 11.JavaScript 引擎
