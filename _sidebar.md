@@ -9,7 +9,7 @@
   - [JavaScript 类型强制转换](/type-coercion/javascript-type-coercion-explained.md)
 - 5.== vs === vs typeof
   - [为什么在 JavaScript 中使用三重等号？](/==vs===vs-typeof/why-use-the-triple-equals-in-javascript.md)
-  - [在 JavaScript 种怎么更好的检查数据类型？](/==vs===vs-typeof/how-to-better-check-data-types-in-javscript.md)
+  - [在 JavaScript 中怎么更好的检查数据类型？](/==vs===vs-typeof/how-to-better-check-data-types-in-javscript.md)
 - 6.函数作用域、块作用域以及词法作用域
   - [理解 JavaScript 里的作用域和上下文](/function-block-lexical-scope/understanding-scope-and-context-in-javascript.md)
 - 7.表达式 vs 语句

@@ -2,13 +2,13 @@
 
 <i>[How to better check data types in javascript](https://webbjocke.com/javascript-check-data-types/) by `Webbjocke` on 2016-08-20</i>
 
-在 JavaScript 种检测数据类型并不总是那么容易。语言本身提供了一个很直接的方式叫做 tyoeof。Typeof 返回一个字符串表示一个数据的类型，对于一个对象 "object"会被返回，一个字符串"string"会被返回。
+在 JavaScript 中检测数据类型并不总是那么容易。语言本身提供了一个很直接的方式叫做 **tyoeof**。Typeof 返回一个字符串表示一个数据的类型，对于一个对象 `"object"`会被返回，一个字符串`"string"`会被返回。
 
-然后 JavaScript 的数据类型，typeof 操作符并不是完美的。比如对于数组和 null 都是返回"object"，NaN 和 Infinity 都是返回"number"。要检查任何不仅仅是原始数据类型的数据，要知道它到底是一个数值、字符串、null、一个数组或是一个真实的对象，就需要一点更多的逻辑。
+然后 JavaScript 的数据类型，typeof 操作符并不是完美的。比如对于数组和 null 都是返回`"object"`，NaN 和 Infinity 都是返回`"number"`。要检查任何不仅仅是原始数据类型的数据，要知道它到底是一个数值、字符串、null、一个数组或是一个真实的对象，就需要一点更多的逻辑。
 
 ## String
 
-一个 `string` 一直都是一个字符串，所以这个简单一点。除非是通过调用 `new`(new String)创建的，typeof 会返回"object"。所以要包括这些字符串在内，可以使用 instanceof。
+一个 `string` 一直都是一个字符串，所以这个简单一点。除非是通过调用 `new`(new String)创建的，typeof 会返回`"object"`。所以要包括这些字符串在内，可以使用 instanceof。
 
 ```javascript
 // Returns if a value is a string
@@ -19,7 +19,7 @@ function isString(value) {
 
 ## Number
 
-通过 typeof，不只是普通的`number`会返回"number"，还有更多的东西，比如 NaN 和 Infinity。要想知道一个值是否真的是数值，就需要用到 isFinite 函数。
+通过 typeof，不只是普通的`number`会返回`"number"`，还有更多的东西，比如 NaN 和 Infinity。要想知道一个值是否真的是数值，就需要用到 isFinite 函数。
 
 ```javascript
 // Returns if a value is really a number
@@ -30,7 +30,7 @@ function isNumber(value) {
 
 ## Array
 
-在 JavaScript 中，`array`并不像 Java 或其他语言里的真实数组。它们实际上是对象，所以 typeof 会返回"object。要想知道某个东西是否真的是一个数值，可以将它的构造函数与 Array 做比较。
+在 JavaScript 中，`array`并不像 Java 或其他语言里的真实数组。它们实际上是对象，所以 typeof 会返回`"object"`。要想知道某个东西是否真的是一个数组，可以将它的构造函数与 Array 做比较。
 
 ```javascript
 // Returns if a value is an array
@@ -66,7 +66,7 @@ function isObject(value) {
 
 ## Null & undefined
 
-大多数时候你不需要显式的去检测 `null and undefined`，因为它们都是假值。下面的函数可以做到。
+大多数时候你不需要显式的去检测 `null` 和 `undefined`，因为它们都是假值。下面的函数可以做到。
 
 ```javascript
 // Returns if a value is null
@@ -82,7 +82,7 @@ function isUndefined(value) {
 
 ## Boolean
 
-对于布尔值，typeof 就足够了，因为 true 和 false 都是返回"boolean"。
+对于布尔值，typeof 就足够了，因为 true 和 false 都是返回`"boolean"`。
 
 ```javascript
 // Returns if a value is a boolean
@@ -126,7 +126,7 @@ function isDate(value) {
 
 ## Symbol
 
-ES6 里新增加了 Symbol 这个新的数据类型。typeof 返回"symbol"已经足够清楚，所以不需要更多的逻辑。
+ES6 里新增加了 Symbol 这个新的数据类型。typeof 返回`"symbol"`已经足够清楚，所以不需要更多的逻辑。
 
 ```javascript
 // Returns if a Symbol
