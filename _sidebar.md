@@ -17,6 +17,7 @@
 - 8.IIFE、模块、命名空间
   - [掌握立即调用函数表达式(IIFE)](/IIFE-modules-namespaces/mastering-IIFE.md)
 - 9.消息队列和事件循环
+  - [用批萨餐厅类比事件循环](/message-queue-and-event-loop/visualising-event-loop-with-pizza-resturant.md)
 - 10.setTimeout、setInterval 和 requestAnimationFrame
 - 11.JavaScript 引擎
 - 12.按位操作符、类数组对象和类型化数组
