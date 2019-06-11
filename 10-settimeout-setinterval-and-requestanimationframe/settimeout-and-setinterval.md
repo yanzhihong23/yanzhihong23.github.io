@@ -2,7 +2,7 @@
  * @Author: Hom Yan
  * @Date: 2019-06-10 17:44:12
  * @LastEditors: Hom Yan
- * @LastEditTime: 2019-06-11 20:17:03
+ * @LastEditTime: 2019-06-11 21:25:53
  -->
 
 # 调度：setTimeout 和 setInterval
@@ -81,7 +81,7 @@ setTimeout(() => alert('Hello'), 1000);
 >
 > 这是无效的，因为`setTimeout`期望的是一个函数的引用。这里`sayHi()`执行了函数，并把执行结果传给了`setTimeout`。在我们这个例子中，`sayHi()`的结果是`undefined`(函数没有返回任何东西)，所以没有任何东西被调度。
 
-## 使用 clearTimeout 取消
+### 使用 clearTimeout 取消
 
 对`setTimeout`的一次调用会返回一个“定时器标识符” `timeId`，我们可以用来取消执行。
 
