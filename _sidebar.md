@@ -2,29 +2,29 @@
  * @Author: Hom Yan
  * @Date: 2019-03-15 15:05:41
  * @LastEditors: Hom Yan
- * @LastEditTime: 2019-06-10 17:49:37
+ * @LastEditTime: 2019-06-11 19:47:40
  -->
 
 - 1.调用栈
-  - [理解 JavaScript 函数执行 -- 调用栈、事件循环、任务以及其他](/call-stack/understanding-javascript-function-executions.md)
+  - [理解 JavaScript 函数执行 -- 调用栈、事件循环、任务以及其他](/1-call-stack/understanding-javascript-function-executions.md)
 - 2.原始类型
-  - [JavaScript 原始类型的秘密生命](/primitive-types/the-secrect-life-of-javascript-primitives.md)
+  - [JavaScript 原始类型的秘密生命](/2-primitive-types/the-secrect-life-of-javascript-primitives.md)
   - [你需要了解的 JavaScript Number 类型](/primitive-types/what-you-need-to-know-about-javascript-number-type.md)
 - 3.值类型和引用类型
-  - [JavaScript 里的值和引用](/value-types-and-reference-types/explaining-value-vs-reference.md)
+  - [JavaScript 里的值和引用](/3-value-types-and-reference-types/explaining-value-vs-reference.md)
 - 4.隐式、显式、标称、结构化以及鸭子类型
-  - [JavaScript 类型强制转换](/type-coercion/javascript-type-coercion-explained.md)
+  - [JavaScript 类型强制转换](/4-type-coercion/javascript-type-coercion-explained.md)
 - 5.== vs === vs typeof
-  - [为什么在 JavaScript 中使用三重等号？](/==vs===vs-typeof/why-use-the-triple-equals-in-javascript.md)
-  - [在 JavaScript 中怎么更好的检查数据类型？](/==vs===vs-typeof/how-to-better-check-data-types-in-javscript.md)
+  - [为什么在 JavaScript 中使用三重等号？](/5-==vs===vs-typeof/why-use-the-triple-equals-in-javascript.md)
+  - [在 JavaScript 中怎么更好的检查数据类型？](/5-==vs===vs-typeof/how-to-better-check-data-types-in-javscript.md)
 - 6.函数作用域、块作用域以及词法作用域
-  - [理解 JavaScript 里的作用域和上下文](/function-block-lexical-scope/understanding-scope-and-context-in-javascript.md)
+  - [理解 JavaScript 里的作用域和上下文](/6-function-block-lexical-scope/understanding-scope-and-context-in-javascript.md)
 - 7.表达式 vs 语句
-  - [你所需要知道的关于 JavaScript 表达式、语句和表达式语句](/expression-vs-statement/expressions-statements-and-expression-statements.md)
+  - [你所需要知道的关于 JavaScript 表达式、语句和表达式语句](/7-expression-vs-statement/expressions-statements-and-expression-statements.md)
 - 8.IIFE、模块、命名空间
-  - [掌握立即调用函数表达式(IIFE)](/IIFE-modules-namespaces/mastering-IIFE.md)
+  - [掌握立即调用函数表达式(IIFE)](/8-IIFE-modules-namespaces/mastering-IIFE.md)
 - 9.消息队列和事件循环
-  - [用批萨餐厅类比事件循环](/message-queue-and-event-loop/visualising-event-loop-with-pizza-resturant.md)
+  - [用批萨餐厅类比事件循环](/9-message-queue-and-event-loop/visualising-event-loop-with-pizza-resturant.md)
 - 10.setTimeout、setInterval 和 requestAnimationFrame
   - [调度：setTimeout 和 setInterval](/10-settimeout-setinterval-and-requestanimationframe/settimeout-and-setinterval.md)
 - 11.JavaScript 引擎
