@@ -1,3 +1,10 @@
+<!--
+ * @Author: Hom Yan
+ * @Date: 2019-03-15 15:05:41
+ * @LastEditors: Hom Yan
+ * @LastEditTime: 2019-06-10 17:49:37
+ -->
+
 - 1.调用栈
   - [理解 JavaScript 函数执行 -- 调用栈、事件循环、任务以及其他](/call-stack/understanding-javascript-function-executions.md)
 - 2.原始类型
@@ -19,6 +26,7 @@
 - 9.消息队列和事件循环
   - [用批萨餐厅类比事件循环](/message-queue-and-event-loop/visualising-event-loop-with-pizza-resturant.md)
 - 10.setTimeout、setInterval 和 requestAnimationFrame
+  - [调度：setTimeout 和 setInterval](/10-settimeout-setinterval-and-requestanimationframe/settimeout-and-setinterval.md)
 - 11.JavaScript 引擎
 - 12.按位操作符、类数组对象和类型化数组
 - 13.DOM 和布局树
