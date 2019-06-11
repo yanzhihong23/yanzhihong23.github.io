@@ -2,51 +2,51 @@
  * @Author: Hom Yan
  * @Date: 2019-03-15 15:05:41
  * @LastEditors: Hom Yan
- * @LastEditTime: 2019-06-11 19:47:40
+ * @LastEditTime: 2019-06-11 20:06:17
  -->
 
-- 1.调用栈
+- 1.&nbsp;调用栈
   - [理解 JavaScript 函数执行 -- 调用栈、事件循环、任务以及其他](/1-call-stack/understanding-javascript-function-executions.md)
-- 2.原始类型
+- 2.&nbsp;原始类型
   - [JavaScript 原始类型的秘密生命](/2-primitive-types/the-secrect-life-of-javascript-primitives.md)
   - [你需要了解的 JavaScript Number 类型](/primitive-types/what-you-need-to-know-about-javascript-number-type.md)
-- 3.值类型和引用类型
+- 3.&nbsp;值类型和引用类型
   - [JavaScript 里的值和引用](/3-value-types-and-reference-types/explaining-value-vs-reference.md)
-- 4.隐式、显式、标称、结构化以及鸭子类型
+- 4.&nbsp;隐式、显式、标称、结构化以及鸭子类型
   - [JavaScript 类型强制转换](/4-type-coercion/javascript-type-coercion-explained.md)
-- 5.== vs === vs typeof
+- 5.&nbsp;== vs === vs typeof
   - [为什么在 JavaScript 中使用三重等号？](/5-==vs===vs-typeof/why-use-the-triple-equals-in-javascript.md)
   - [在 JavaScript 中怎么更好的检查数据类型？](/5-==vs===vs-typeof/how-to-better-check-data-types-in-javscript.md)
-- 6.函数作用域、块作用域以及词法作用域
+- 6.&nbsp;函数作用域、块作用域以及词法作用域
   - [理解 JavaScript 里的作用域和上下文](/6-function-block-lexical-scope/understanding-scope-and-context-in-javascript.md)
-- 7.表达式 vs 语句
+- 7.&nbsp;表达式 vs 语句
   - [你所需要知道的关于 JavaScript 表达式、语句和表达式语句](/7-expression-vs-statement/expressions-statements-and-expression-statements.md)
-- 8.IIFE、模块、命名空间
+- 8.&nbsp;IIFE、模块、命名空间
   - [掌握立即调用函数表达式(IIFE)](/8-IIFE-modules-namespaces/mastering-IIFE.md)
-- 9.消息队列和事件循环
+- 9.&nbsp;消息队列和事件循环
   - [用批萨餐厅类比事件循环](/9-message-queue-and-event-loop/visualising-event-loop-with-pizza-resturant.md)
-- 10.setTimeout、setInterval 和 requestAnimationFrame
+- 10.&nbsp;setTimeout、setInterval 和 requestAnimationFrame
   - [调度：setTimeout 和 setInterval](/10-settimeout-setinterval-and-requestanimationframe/settimeout-and-setinterval.md)
-- 11.JavaScript 引擎
-- 12.按位操作符、类数组对象和类型化数组
-- 13.DOM 和布局树
-- 14.Factories 和 Classes
-- 15.this、call、apply 以及 bind
-- 16.new 与构造函数、instanceof 与实例
-- 17.原型继承和原型链
-- 18.Object.create 和 Object.assign
-- 19.map、reduce、filter
-- 20.纯函数、副作用和状态突变
-- 21.闭包
-- 22.高阶函数
-- 23.递归
-- 24.集合和生成器
-- 25.Promises
-- 26.async/await
-- 27.数据结构
-- 28.昂贵的操作和大 O 符号
-- 29.算法
-- 30.继承、多态性和代码重用
-- 31.设计模式
-- 32.偏函数应用、柯里化、compose、pipe
-- 33.代码整洁之道
+- 11.&nbsp;JavaScript 引擎
+- 12.&nbsp;按位操作符、类数组对象和类型化数组
+- 13.&nbsp;DOM 和布局树
+- 14.&nbsp;Factories 和 Classes
+- 15.&nbsp;this、call、apply 以及 bind
+- 16.&nbsp;new 与构造函数、instanceof 与实例
+- 17.&nbsp;原型继承和原型链
+- 18.&nbsp;Object.create 和 Object.assign
+- 19.&nbsp;map、reduce、filter
+- 20.&nbsp;纯函数、副作用和状态突变
+- 21.&nbsp;闭包
+- 22.&nbsp;高阶函数
+- 23.&nbsp;递归
+- 24.&nbsp;集合和生成器
+- 25.&nbsp;Promises
+- 26.&nbsp;async/await
+- 27.&nbsp;数据结构
+- 28.&nbsp;昂贵的操作和大 O 符号
+- 29.&nbsp;算法
+- 30.&nbsp;继承、多态性和代码重用
+- 31.&nbsp;设计模式
+- 32.&nbsp;偏函数应用、柯里化、compose、pipe
+- 33.&nbsp;代码整洁之道
