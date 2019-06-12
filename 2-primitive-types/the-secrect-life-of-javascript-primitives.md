@@ -1,3 +1,10 @@
+<!--
+ * @Author: Hom Yan
+ * @Date: 2018-11-01 17:11:41
+ * @LastEditors: Hom Yan
+ * @LastEditTime: 2019-06-12 12:00:34
+ -->
+
 # JavaScript 原始类型的秘密生命
 
 [The Secret Life of JavaScript Primitives](https://javascriptweblog.wordpress.com/2010/09/27/the-secret-life-of-javascript-primitives/) by `Angus Croll` on 2010-09-27

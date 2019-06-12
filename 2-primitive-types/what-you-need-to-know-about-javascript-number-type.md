@@ -1,10 +1,17 @@
+<!--
+ * @Author: Hom Yan
+ * @Date: 2018-11-05 18:45:41
+ * @LastEditors: Hom Yan
+ * @LastEditTime: 2019-06-12 12:01:04
+ -->
+
 # 你需要了解的 JavaScript Number 类型
 
 [Here is what you need to know about JavaScript’s Number type](https://medium.com/dailyjs/javascripts-number-type-8d59199db1b6) by `Max Koretskyi, aka Wizard` on 2016-10-13
 
 <div style="text-align:center">
  <img src="https://cdn-images-1.medium.com/max/1600/1*aGnwvStsrH3OnrwdlHvsgQ.jpeg">
-</div>
+</div> 
 <center>为什么 0.1+0.2 不等于 0.3 而 9007199254740992 等于 9007199254740993 ?</center>
 
 很多静态语言像 Java 或 C 对于数字都有不同的数据类型。比如，如果你需要存储一个范围在[-128;127]之间的整数，Java 中你可以使用`byte`，C 中你可以使用`char`，这两个都只占用一个字节。如果你需要存储更大的整数，你可以使用`int`或`long`这两个数据类型，分别占用 4 个和 8 个字节。还有一些单独的数据类型可用于存储带小数部分的数字 - `float`占用 4 个字节，`double`占 8 个字节。 这些通常被称为浮点格式，稍后我们将看到此名称的来源。

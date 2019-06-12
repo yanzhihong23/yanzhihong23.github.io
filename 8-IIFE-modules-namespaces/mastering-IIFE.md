@@ -1,3 +1,10 @@
+<!--
+ * @Author: Hom Yan
+ * @Date: 2018-11-30 15:05:41
+ * @LastEditors: Hom Yan
+ * @LastEditTime: 2019-06-12 12:04:53
+ -->
+
 # 掌握立即调用函数表达式(IIFE)
 
 [Essential JavaScript: Mastering Immediately-invoked Function Expressions](https://medium.com/@vvkchandra/essential-javascript-mastering-immediately-invoked-function-expressions-67791338ddc6) BY `Chandra Gundamaraju` ON 2017-08-04
@@ -265,82 +272,79 @@ IIFEs 不仅可以返回值，它们被调用时还能携带参数。我们看�
 
 2. 而且，JavaScript 压缩器可以安全的压缩函数声明的参数。如果我们没有把它们作为参数传进去，压缩器就无法压缩对`document`或`jQuery`的直接引用，因为它们在函数的作用域之外。。
 
-## 经典JavaScript模块模式
-现在你已经掌握了IIFEs，现在我们来看一个把IIFEs和闭包用到极致的模块模式。
+## 经典 JavaScript 模块模式
+
+现在你已经掌握了 IIFEs，现在我们来看一个把 IIFEs 和闭包用到极致的模块模式。
 
 我们将要实现一个无缝的经典 `队列` 单例对象，没有人能不小心破坏当前的队列值。
 
 ```javascript
 var Sequence = (function sequenceIIFE() {
-    
-    // 存储当前计数的私有变量
-    var current = 0;
-    
-    // IIFE返回的对象
-    return {
-    };
-    
-}());
+  // 存储当前计数的私有变量
+  var current = 0;
+
+  // IIFE返回的对象
+  return {};
+})();
 
 alert(typeof Sequence); // alerts "object"
 ```
-1. 在上面的例子中，我们有一个返回对象的IIFE。
-2. 在IIFE里，我们还有一个名为`current`的本地变量。
-3. IIFE的返回值，就是这个例子里的对象，被分配给了`Sequence`变量。12行准确的弹出`object`，因为我们在IIFE里返回了一个对象。
+
+1. 在上面的例子中，我们有一个返回对象的 IIFE。
+2. 在 IIFE 里，我们还有一个名为`current`的本地变量。
+3. IIFE 的返回值，就是这个例子里的对象，被分配给了`Sequence`变量。12 行准确的弹出`object`，因为我们在 IIFE 里返回了一个对象。
 
 现在我们来给返回的对象添加一些函数。
 
 ```javascript
 var Sequence = (function sequenceIIFE() {
-    
-    // 存储当前计数的私有变量
-    var current = 0;
-    
-    // IIFE返回的对象
-    return {
-        getCurrentValue: function() {
-            return current;
-        },
-        
-        getNextValue: function() {
-            current = current + 1;
-            return current;
-        }
-    };
-    
-}());
+  // 存储当前计数的私有变量
+  var current = 0;
+
+  // IIFE返回的对象
+  return {
+    getCurrentValue: function() {
+      return current;
+    },
+
+    getNextValue: function() {
+      current = current + 1;
+      return current;
+    }
+  };
+})();
 
 console.log(Sequence.getNextValue()); // 1
 console.log(Sequence.getNextValue()); // 2
 console.log(Sequence.getCurrentValue()); // 2
 ```
 
-1. 在这个例子中，我们给IIFE返回的对象添加了2个函数。
+1. 在这个例子中，我们给 IIFE 返回的对象添加了 2 个函数。
 2. `getCurrentValue`函数返回 `current`变量的值。
-3. `getNextValue`函数给`current`变量加1并且返回`current`的值。
+3. `getNextValue`函数给`current`变量加 1 并且返回`current`的值。
 
-由于`current`是IIFE的私有变量，除了可以返问闭包的函数，没人可以改变或返问变量`current`。
+由于`current`是 IIFE 的私有变量，除了可以返问闭包的函数，没人可以改变或返问变量`current`。
 
 (如果你想掌握闭包，请阅读我的关于闭包的不可思议、火爆的教程：[Learning JavaScript Closures through the Laws of Karma](https://engineering.salesforce.com/learn-javascript-closures-through-the-laws-of-karma-49d32d35b3f7))
 
-现在你已经学到一个无比强大的JavaScript模式，它结合了IIFE和闭包的力量。
+现在你已经学到一个无比强大的 JavaScript 模式，它结合了 IIFE 和闭包的力量。
 
-这是一个非常基本的模块模式变化。有更多的模式，但几乎所有都使用IIFE来创建一个私有闭包作用域。
+这是一个非常基本的模块模式变化。有更多的模式，但几乎所有都使用 IIFE 来创建一个私有闭包作用域。
 
 ## 什么时候可以省略括号
+
 包裹函数表达式的括号强制把函数变成一个表达式而不是一个声明。
 
-但是当对于JavaScript引擎来看，很明显是一个函数表达式的时候，我们就可以像下面这样去掉包裹的括号。
+但是当对于 JavaScript 引擎来看，很明显是一个函数表达式的时候，我们就可以像下面这样去掉包裹的括号。
 
 ```javascript
-var result = function() {
-    return "From IIFE!";
-}();
+var result = (function() {
+  return 'From IIFE!';
+})();
 ```
 
-上面的例子中，`function`关键字不是声明的第一个词。所以JavaScript不会把它当做一个函数声明/定义。类似的还有其它地方你可以省略括号，当你知道那是一个表达式。
+上面的例子中，`function`关键字不是声明的第一个词。所以 JavaScript 不会把它当做一个函数声明/定义。类似的还有其它地方你可以省略括号，当你知道那是一个表达式。
 
-但我通常还是更倾向于使用括号。使用括号可以提高可读性，通过第一行的书写法来提醒读者这个函数将要转变为一个IIFE。他们不需要滚动到函数的最后一行，才意识到原来这是一个IIFE。
+但我通常还是更倾向于使用括号。使用括号可以提高可读性，通过第一行的书写法来提醒读者这个函数将要转变为一个 IIFE。他们不需要滚动到函数的最后一行，才意识到原来这是一个 IIFE。
 
-
-这就是当你在代码里开始使用IIFE所要知道的。他们不仅帮助组织和让你的代码表达的更优雅，而且可以避免创建不必要的全局变量来减少bug。现在，你就是一个认证过的IIFE忍者！
+这就是当你在代码里开始使用 IIFE 所要知道的。他们不仅帮助组织和让你的代码表达的更优雅，而且可以避免创建不必要的全局变量来减少 bug。现在，你就是一个认证过的 IIFE 忍者！

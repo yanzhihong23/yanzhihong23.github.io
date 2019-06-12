@@ -1,3 +1,10 @@
+<!--
+ * @Author: Hom Yan
+ * @Date: 2018-11-09 17:24:41
+ * @LastEditors: Hom Yan
+ * @LastEditTime: 2019-06-12 12:02:14
+ -->
+
 # JavaScript 类型强制转换
 
 [JavaScript type coercion explained](https://medium.freecodecamp.org/js-type-coercion-explained-27ba3d9a2839) by `Alexey Samoshkin` on 2018-01-18

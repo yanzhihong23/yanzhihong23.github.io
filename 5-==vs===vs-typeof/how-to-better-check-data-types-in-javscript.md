@@ -1,3 +1,10 @@
+<!--
+ * @Author: Hom Yan
+ * @Date: 2018-11-13 16:05:41
+ * @LastEditors: Hom Yan
+ * @LastEditTime: 2019-06-12 12:02:41
+ -->
+
 # 在 JavaScript 种怎么更好的检查数据类型？
 
 <i>[How to better check data types in javascript](https://webbjocke.com/javascript-check-data-types/) by `Webbjocke` on 2016-08-20</i>

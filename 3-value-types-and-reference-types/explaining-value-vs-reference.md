@@ -1,3 +1,10 @@
+<!--
+ * @Author: Hom Yan
+ * @Date: 2018-11-01 23:28:41
+ * @LastEditors: Hom Yan
+ * @LastEditTime: 2019-06-12 12:01:44
+ -->
+
 # JavaScript 里的值和引用
 
 [Explaining Value vs. Reference in Javascript](https://codeburst.io/explaining-value-vs-reference-in-javascript-647a975e12a0) by `Arnav Aggarwal` on 2017-07-02

@@ -1,3 +1,10 @@
+<!--
+ * @Author: Hom Yan
+ * @Date: 2018-11-28 15:05:41
+ * @LastEditors: Hom Yan
+ * @LastEditTime: 2019-06-12 12:03:18
+ -->
+
 # 理解 JavaScript 里的作用域和上下文
 
 [Understanding Scope and Context in JavaScript](http://ryanmorr.com/understanding-scope-and-context-in-javascript/) by `Ryan Morr` on 2013-08-16

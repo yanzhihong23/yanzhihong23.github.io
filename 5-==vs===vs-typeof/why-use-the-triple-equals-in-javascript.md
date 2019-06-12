@@ -1,3 +1,10 @@
+<!--
+ * @Author: Hom Yan
+ * @Date: 2018-11-13 15:05:41
+ * @LastEditors: Hom Yan
+ * @LastEditTime: 2019-06-12 12:03:02
+ -->
+
 # 为什么在 JavaScript 中使用三重等号？
 
 [Why Use the Triple-Equals Operator in JavaScript?](https://www.impressivewebs.com/why-use-triple-equals-javascipt/) by `Louis Lazaris` on 2013-03-01

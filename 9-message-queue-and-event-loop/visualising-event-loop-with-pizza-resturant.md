@@ -1,3 +1,10 @@
+<!--
+ * @Author: Hom Yan
+ * @Date: 2019-05-20 20:36:04
+ * @LastEditors: Hom Yan
+ * @LastEditTime: 2019-06-12 11:58:09
+ -->
+
 # 用批萨餐厅类比事件循环
 
 [Visualising the JavaScript Event Loop with a Pizza Restaurant analogy](https://dev.to/presto412/visualising-the-javascript-event-loop-with-a-pizza-restaurant-analogy-47a8) by `Priyansh Jain` on 2018-04-10

@@ -1,3 +1,10 @@
+<!--
+ * @Author: Hom Yan
+ * @Date: 2018-11-16 15:05:41
+ * @LastEditors: Hom Yan
+ * @LastEditTime: 2019-06-12 12:04:31
+ -->
+
 # 你所需要知道的关于 JavaScript 表达式、语句和表达式语句
 
 [All you need to know about Javascript's Expressions, Statements and Expression Statements](https://dev.to/promhize/javascript-in-depth-all-you-need-to-know-about-expressions-statements-and-expression-statements-5k2) by `Promise Tochi` on 2017-10-21
@@ -10,7 +17,7 @@
 
 {2} + 2 // 2
 
-{2+2} + 3 // 3
+{2+2} + 3 // 3 
 
 {2+2} - 3 // -3
 ```

@@ -1,3 +1,10 @@
+<!--
+ * @Author: Hom Yan
+ * @Date: 2018-11-02 15:05:41
+ * @LastEditors: Hom Yan
+ * @LastEditTime: 2019-06-12 11:59:13
+ -->
+
 # 理解 JavaScript 函数执行 -- 调用栈、事件循环、任务以及其他
 
 [Understanding Javascript Function Executions — Call Stack, Event Loop , Tasks & more](https://medium.com/@gaurav.pandvia/understanding-javascript-function-executions-tasks-event-loop-call-stack-more-part-1-5683dea1f5ec) by `Gaurav Pandvia` on 2017-05-29
