@@ -2,7 +2,7 @@
  * @Author: Hom Yan
  * @Date: 2019-03-15 15:05:41
  * @LastEditors: Hom Yan
- * @LastEditTime: 2019-06-11 20:06:17
+ * @LastEditTime: 2019-06-13 16:30:20
  -->
 
 - 1.&nbsp;调用栈
@@ -28,6 +28,7 @@
 - 10.&nbsp;setTimeout、setInterval 和 requestAnimationFrame
   - [调度：setTimeout 和 setInterval](/10-settimeout-setinterval-and-requestanimationframe/settimeout-and-setinterval.md)
 - 11.&nbsp;JavaScript 引擎
+  - [JavaScript要点：为什么你应该知道引擎是如何工作的](/11-javascript-engine/javascript-essentials-why-you-should-know-how-the-engine-works.md)
 - 12.&nbsp;按位操作符、类数组对象和类型化数组
 - 13.&nbsp;DOM 和布局树
 - 14.&nbsp;Factories 和 Classes
