@@ -2,14 +2,14 @@
  * @Author: Hom Yan
  * @Date: 2019-03-15 15:05:41
  * @LastEditors: Hom Yan
- * @LastEditTime: 2019-06-13 16:30:20
+ * @LastEditTime: 2019-06-14 19:35:17
  -->
 
 - 1.&nbsp;调用栈
   - [理解 JavaScript 函数执行 -- 调用栈、事件循环、任务以及其他](/1-call-stack/understanding-javascript-function-executions.md)
 - 2.&nbsp;原始类型
   - [JavaScript 原始类型的秘密生命](/2-primitive-types/the-secrect-life-of-javascript-primitives.md)
-  - [你需要了解的 JavaScript Number 类型](/primitive-types/what-you-need-to-know-about-javascript-number-type.md)
+  - [你需要了解的 JavaScript Number 类型](/2-primitive-types/what-you-need-to-know-about-javascript-number-type.md)
 - 3.&nbsp;值类型和引用类型
   - [JavaScript 里的值和引用](/3-value-types-and-reference-types/explaining-value-vs-reference.md)
 - 4.&nbsp;隐式、显式、标称、结构化以及鸭子类型
