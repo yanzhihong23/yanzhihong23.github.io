@@ -2,7 +2,7 @@
  * @Author: Hom Yan
  * @Date: 2019-03-15 15:05:41
  * @LastEditors: Hom Yan
- * @LastEditTime: 2019-06-14 19:35:17
+ * @LastEditTime: 2019-06-19 17:06:04
  -->
 
 - 1.&nbsp;调用栈
@@ -31,7 +31,10 @@
   - [JavaScript要点：为什么你应该知道引擎是如何工作的](/11-javascript-engine/javascript-essentials-why-you-should-know-how-the-engine-works.md)
 - 12.&nbsp;按位操作符、类数组对象和类型化数组
 - 13.&nbsp;DOM 和布局树
+  - [构建对象模型](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/constructing-the-object-model)
+  - [渲染树构建、布局及绘制](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-tree-construction)
 - 14.&nbsp;Factories 和 Classes
+  - [JavaScript Classes -- 引擎盖之下](/14-factories-classes/javascript-classes-under-the-hood.md)
 - 15.&nbsp;this、call、apply 以及 bind
 - 16.&nbsp;new 与构造函数、instanceof 与实例
 - 17.&nbsp;原型继承和原型链
