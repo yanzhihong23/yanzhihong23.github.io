@@ -2,7 +2,7 @@
  * @Author: Hom Yan
  * @Date: 2019-06-19 17:03:21
  * @LastEditors: Hom Yan
- * @LastEditTime: 2019-06-20 17:50:19
+ * @LastEditTime: 2019-08-06 14:32:51
  -->
 
 # JavaScript 类 -- 引擎盖之下
@@ -11,7 +11,7 @@
 
 ![under the hood](../imgs/under-the-hood.jpg)
 
-JavaScript 类只是现有基于原型继承和构造函数的语法糖。为了理解 JS 类背后的思想，我们需要理解构造函数、原型以及其他相关的概念。
+JavaScript 类只是基于现有原型继承和构造函数的语法糖。为了理解 JS 类背后的思想，我们需要理解构造函数、原型以及其他相关的概念。
 
 ## 1. 构造函数
 
