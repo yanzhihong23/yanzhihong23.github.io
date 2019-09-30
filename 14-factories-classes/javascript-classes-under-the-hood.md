@@ -2,7 +2,7 @@
  * @Author: Hom Yan
  * @Date: 2019-06-19 17:03:21
  * @LastEditors: Hom Yan
- * @LastEditTime: 2019-08-06 14:32:51
+ * @LastEditTime: 2019-09-29 15:42:11
  -->
 
 # JavaScript 类 -- 引擎盖之下
@@ -47,6 +47,8 @@ let car2 = new Vehicle('Honda', 'Civic', 'White');
 ```javascript
 car2.year = '2012';
 ```
+
+> 译注：这里指的是并没有给所有实例都添加上该属性
 
 你需要把它加入到构造函数中：
 
