@@ -10,7 +10,7 @@
 
 构造函数在技术上是常规函数。不过有两个约定：
 
-1. 他们首先用大写字母命名。
+1. 它们以首字母大写来命名。
 2. 它们只能用 `"new"` 操作符来执行。
 
 例如：
@@ -29,11 +29,11 @@ alert(user.isAdmin); // false
 
 当一个函数作为 `new User(...)`执行时，它执行以下步骤：
 
-一个新的空对象被创建并分配给 `this`。
+1. 一个新的空对象被创建并分配给 `this`。
+2. 函数体执行。通常它会修改 `this`，为其添加新的属性。
+3. 返回 `this` 的值。
 
-1. 函数体执行。通常它会修改 `this`，为其添加新的属性。
-2. 返回 `this` 的值。
-3. 换句话说，`new User(...)` 做类似的事情：
+换句话说，`new User(...)` 做类似的事情：
 
 ```javascript
 function User(name) {
@@ -58,7 +58,7 @@ let user = {
 
 现在，如果我们想创建其他用户，我们可以调用 `new User("Ann")`，`new User("Alice")` 等等。比每次使用字面量创建要短得多，而且易于阅读。
 
-这是构造函数的主要目的 — 实现可重用的对象创建代码
+这是构造函数的主要目的 — 实现可重用的对象创建代码。
 
 让我们再次注意 — 从技术上讲，任何函数都可以用作构造函数。即：任何函数都可以运行 `new`，它会执行上面的算法。 “首字母大写”是一个共同的约定，以明确表示一个函数将被使用 `new` 运行。
 
@@ -106,15 +106,16 @@ new User(); // function User { ... }
 我们还可以使`new`和常规调用的效果一致，像这样：
 
 ```javascript
-unction User(name) {
-  if (!new.target) { // 如果你没有运行 new
+function User(name) {
+  if (!new.target) {
+    // 如果你没有运行 new
     return new User(name); // ...会为你添加 new
   }
 
   this.name = name;
 }
 
-let john = User("John"); // 重新调用 new User
+let john = User('John'); // 重新调用 new User
 alert(john.name); // John
 ```
 
@@ -155,12 +156,12 @@ alert(new SmallUser().name); // John
 
 通常构造函数没有 `return` 语句。这里我们主要为了完整性而提及返回对象的特殊行为。
 
+<!--prettier-ignore-->
 > #### 省略括号
 >
 > 顺便说一下，如果没有参数我们可以省略 `new` 之后的括号：
->
 > ```javascript
-> let user = new User(); // <-- 没有括号
+> let user = new User; // <-- 没有括号
 > // 一样的效果
 > let user = new User();
 > ```
