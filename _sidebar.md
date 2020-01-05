@@ -1,8 +1,8 @@
 <!--
  * @Author: Hom Yan
  * @Date: 2019-03-15 15:05:41
- * @LastEditors: Hom Yan
- * @LastEditTime: 2019-09-30 14:42:34
+ * @LastEditors  : Hom Yan
+ * @LastEditTime : 2020-01-05 14:55:24
  -->
 
 - 1.&nbsp;调用栈
@@ -41,6 +41,7 @@
 - 16.&nbsp;new 与构造函数、instanceof 与实例
   - [构造函数和操作符 "new"](/16-new-constructor-instance/constructor-new.md)
 - 17.&nbsp;原型继承和原型链
+  - [Prototype vs Class](/17-prototype-inheritance-and-prototype-chain/prototype-vs-class.md)
 - 18.&nbsp;Object.create 和 Object.assign
 - 19.&nbsp;map、reduce、filter
 - 20.&nbsp;纯函数、副作用和状态突变
