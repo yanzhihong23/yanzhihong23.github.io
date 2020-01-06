@@ -2,7 +2,7 @@
  * @Author: Hom Yan
  * @Date: 2019-03-15 15:05:41
  * @LastEditors  : Hom Yan
- * @LastEditTime : 2020-01-05 14:55:24
+ * @LastEditTime : 2020-01-06 16:02:32
  -->
 
 - 1.&nbsp;调用栈
@@ -43,6 +43,8 @@
 - 17.&nbsp;原型继承和原型链
   - [Prototype vs Class](/17-prototype-inheritance-and-prototype-chain/prototype-vs-class.md)
 - 18.&nbsp;Object.create 和 Object.assign
+  - [Object.create() — MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/create)
+  - [Object.assign() — MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
 - 19.&nbsp;map、reduce、filter
 - 20.&nbsp;纯函数、副作用和状态突变
 - 21.&nbsp;闭包
