@@ -1,8 +1,8 @@
 <!--
  * @Author: Hom Yan
  * @Date: 2019-03-15 15:05:41
- * @LastEditors  : Hom Yan
- * @LastEditTime : 2020-01-06 16:02:32
+ * @LastEditors: Hom Yan
+ * @LastEditTime: 2020-06-03 18:01:50
  -->
 
 - 1.&nbsp;调用栈
@@ -47,6 +47,7 @@
   - [Object.assign() — MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
 - 19.&nbsp;map、reduce、filter
 - 20.&nbsp;纯函数、副作用和状态突变
+  - [什么是纯函数？为什么使用它们？](/20-pure-functions-side-effects-and-state-mutation/what-are-pure-funtions.md)
 - 21.&nbsp;闭包
 - 22.&nbsp;高阶函数
 - 23.&nbsp;递归
