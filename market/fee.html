@@ -1,0 +1,144 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Binance USDT Futures</title>
+  <link href="https://binance-docs.github.io/apidocs/futures/cn/images/favicon.ico" rel="icon" type="image/ico">
+  <style>
+    #app {
+      width: 500px;
+      margin: 0 auto;
+    }
+    [v-cloak]{
+      display: none;
+    }
+    .title {
+      text-align: center;
+      font-size: 30px;
+      line-height: 60px;
+    }
+    .item {
+      display: flex;
+      line-height: 32px;
+      padding: 0 10px;
+    }
+    .item.header {
+      font-weight: bold;
+      border-bottom: dashed 1px red;
+    }
+    .item:not(.header):hover {
+      background: red;
+      color: #fff;
+      font-size: 18px;
+    }
+    .symbol {
+      width: 200px;
+    }
+    .price {
+      width: 150px;
+    }
+    .fee {
+      flex: 1;
+      text-align: right;
+    }
+    
+    @keyframes rotate {
+      0 {
+        transform: rotate(0);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    .refresh-icon {
+      width: 25px;
+      height: 25px;
+      display: inline-block;
+      position: relative;
+      border: 2px solid red;
+      border-right-color: transparent;
+      border-left-color: transparent;
+      -moz-border-radius: 100%;
+      -webkit-border-radius: 100%;
+      border-radius: 100%;
+    }
+    .refresh-icon:after {
+      content: '';
+      position: absolute;
+      border: 7px solid transparent;
+      border-top: 7px solid red;
+      top: 0;
+      left: 18px;
+      -moz-transform: rotate(-40deg);
+      -ms-transform: rotate(-40deg);
+      -webkit-transform: rotate(-40deg);
+      transform: rotate(-40deg);
+    }
+    .refresh-icon:before {
+      content: '';
+      position: absolute;
+      border: 7px solid transparent;
+      border-bottom: 7px solid red;
+      top: 9px;
+      right: 18px;
+      -moz-transform: rotate(-30deg);
+      -ms-transform: rotate(-30deg);
+      -webkit-transform: rotate(-30deg);
+      transform: rotate(-30deg);
+    }
+    .button {
+      position: fixed;
+      top: 120px;
+      right: 20px;
+      cursor: pointer;
+    }
+    .button:hover {
+      animation: rotate 0.5s linear;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="title">Binance USDT Futures Funding Rate</div>
+    <section v-cloak>
+      <div class="item header">
+        <div class="symbol">Symbol</div>
+        <div class="price">Mark Price</div>
+        <div class="fee">Funding Rate</div>
+      </div>
+      <div class="item" v-for="(item, idx) in info" :key="idx">
+        <div class="symbol">{{item.symbol}}</div>
+        <div class="price">{{item.markPrice}}</div>
+        <div class="fee">{{item.fee}}%</div>
+      </div>
+    </section>
+
+    <span class="refresh-icon button" @click="update">
+    </span>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.min.js"></script>
+  <script>
+      const app = new Vue({
+        el: '#app',
+        data: {
+          info: []
+        },
+        methods: {
+          async update() {
+            const res = await axios.get(`https://fapi.binance.com/fapi/v1/premiumIndex`);
+            if(res) {
+              this.info = res.data.sort((a, b) => +b.lastFundingRate - +a.lastFundingRate).map(i => {
+                i.fee = (i.lastFundingRate*100).toFixed(4);
+                return i;
+              });
+            }
+          }
+        },
+        created() {
+          this.update();
+        }
+      })
+    </script>
+</body>
+</html>
