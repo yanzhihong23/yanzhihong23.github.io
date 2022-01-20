@@ -1,0 +1,146 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Binance USDT Futures</title>
+  <style>
+  .container {
+    display: flex;
+    align-items: center;
+  }
+  .input {
+    flex: 1;
+    box-sizing: border-box;
+    outline: none;
+    border: solid 1px #2c68ff;
+    height: 43px;
+    padding: 6px 12px;
+    font-size: 14px;
+    margin: 0;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+  }
+  .button {
+    box-sizing: border-box;
+    display: inline-block;
+    width: 80px;
+    height: 43px;
+    line-height: 43px;
+    padding: 0 12px;
+    background: #3c68ff;
+    color: #fff;
+    cursor: pointer;
+    text-align: center;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+  }
+  #output {
+    font-size: 20px;
+    color: #999;
+    padding-top: 10px;
+    line-height: 26px;
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+  }
+  .item {
+    color: #999;
+  }
+  .price {
+    color: #3c68ff;
+  }
+  .up {
+    color: #51BA85;
+  }
+  .error, .down {
+    color: #E04A59;
+  }
+  .usdt {
+    font-size: 12px;
+  }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="container">
+      <input class="input" placeholder="BTC" type="text" v-model="query" @keyup.enter="search" autocomplete="off" autocapitalize="off" autocorrect="off" />
+      <span class="button" @click="search">Search</span>
+    </div>
+    <div id="output">
+      <div class="row" v-for="(i, idx) in info" :key="idx" v-show="!msg">
+        <span class="item">{{i.name}}:</span>
+        <span class="value" :class="i.cls"><span class="usdt" v-if="i.usdt">{{usdt}} </span>{{i.value}}{{i.unit}}</span>
+      </div>
+      <div class="error">{{msg}}</div>
+    </div>
+  </div>
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script>
+    const app = new Vue({
+      el: '#app',
+      data: {
+        usdt: decodeURI('%E2%82%AE'),
+        query: '',
+        info: [],
+        msg: ''
+      },
+      watch: {
+        query(val) {
+          this.query = val.toUpperCase();
+        }
+      },
+      computed: {
+        symbol() {
+          return this.query + 'USDT';
+        },
+        tickerEndpoint() {
+          return `https://fapi.binance.com/fapi/v1/ticker/24hr?symbol=${this.symbol}`;
+        },
+        feeEndpoint() {
+          return `https://fapi.binance.com/fapi/v1/premiumIndex?symbol=${this.symbol}`;
+        },
+        ratioEndpoint() {
+          return `https://fapi.binance.com/futures/data/topLongShortAccountRatio?symbol=${this.symbol}&period=15m&limit=1`
+        }
+      },
+      methods: {
+        async search() {
+          this.info = [];
+          this.msg = null;
+          if(!this.query) return;
+
+          const fetchTicker = axios.get(this.tickerEndpoint);
+          const fetchFee = axios.get(this.feeEndpoint);
+          const fetchRatio = axios.get(this.ratioEndpoint);
+
+          Promise.all([fetchTicker, fetchFee, fetchRatio]).then(([ticker, fee, ratio]) => {
+            const data = {...ticker.data, ...fee.data, ...ratio.data[0]};
+            this.update(data);
+          }).catch(err => {
+            this.msg = err.message;
+          });
+        },
+        update(data) {
+          const cls = +data.priceChange > 0 ? 'up' : 'down';
+          this.info = [
+            {name: 'open price', value: data.openPrice, usdt: true},
+            {name: 'last price', value: data.lastPrice, cls: 'price', usdt: true},
+            {name: 'price change', value: data.priceChange, usdt: true},
+            {name: 'price change percent', value: data.priceChangePercent, cls, unit: '%'},
+            {name: 'weighted avg price', value: data.weightedAvgPrice, usdt: true},
+            {name: '24h high', value: data.highPrice, usdt: true},
+            {name: '24h low', value: data.lowPrice, usdt: true},
+            {name: '24h volumn', value: (data.volume/1000000).toFixed(2), unit: ' M'},
+            {name: '24h quote', value: (data.quoteVolume/1000000).toFixed(2), unit: ' M', usdt: true},
+            {name: 'funding rate', value: (data.lastFundingRate*100).toFixed(4), unit: '%'},
+            {name: '15m long short ratio', value: data.longShortRatio}
+          ]
+        }
+      }
+    })
+    </script>
+</body>
+</html>
