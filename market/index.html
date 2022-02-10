@@ -79,13 +79,14 @@
   <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
   <script>
-    const app = new Vue({
-      el: '#app',
-      data: {
-        usdt: decodeURI('%E2%82%AE'),
-        query: '',
-        info: [],
-        msg: ''
+    const app = Vue.createApp({
+      data() {
+        return {
+          usdt: decodeURI('%E2%82%AE'),
+          query: '',
+          info: [],
+          msg: ''
+        }
       },
       watch: {
         query(val) {
@@ -141,6 +142,8 @@
         }
       }
     })
+
+    app.mount('#app')
     </script>
 </body>
 </html>
