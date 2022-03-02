@@ -107,7 +107,7 @@
       const app = Vue.createApp({
         data() {
           return {
-            all: [],
+            instruments: [],
             tickers: [
               { channel: "tickers", instId: "BTC-USDT-SWAP" },
               { channel: "tickers", instId: "ETH-USDT-SWAP" },
@@ -118,8 +118,6 @@
           };
         },
         created() {
-          // this.updateAll()
-
           const tickers = this.cache();
           if (tickers) {
             this.tickers = tickers;
@@ -130,7 +128,13 @@
             this.socket.send(
               JSON.stringify({
                 op: "subscribe",
-                args: this.tickers,
+                args: [
+                  {
+                    channel: "instruments",
+                    instType: "SWAP",
+                  },
+                  ...this.tickers,
+                ],
               })
             );
           });
@@ -147,7 +151,10 @@
             if (!/{/.test(data)) return;
 
             data = JSON.parse(data);
-            if (data.data) {
+            if (data.arg.channel === "instruments") {
+              if (!data.data) return;
+              this.instruments = data.data.map((i) => i.instId);
+            } else if (data.data) {
               const d = data.data[0];
               this.tickers.forEach((t) => {
                 if (t.instId === d.instId) {
@@ -172,19 +179,14 @@
           });
         },
         methods: {
-          updateAll() {
-            fetch("https://www.okx.com/api/v5/market/tickers?instType=SWAP")
-              .then((res) => res.json())
-              .then((res) => (this.all = res.data));
-          },
           add() {
             const instId = this.query.toUpperCase() + "-USDT-SWAP";
 
             const isExsiting = this.tickers.find((t) => t.instId === instId);
             if (isExsiting) return;
 
-            // const isValid = this.all.find(t => t.instId === instId)
-            // if(!isValid) return
+            const isValid = this.instruments.find((t) => t === instId);
+            if (!isValid) return;
 
             const arg = { channel: "tickers", instId };
             this.tickers.push(arg);
