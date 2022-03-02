@@ -1,0 +1,207 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OKX SWAP</title>
+    <style>
+      html, body {
+        margin: 0; 
+        padding: 0;
+      }
+      .query {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+      }
+      .input {
+        flex: 1;
+        box-sizing: border-box;
+        outline: none;
+        border: solid 1px #2c68ff;
+        height: 60px;
+        padding: 6px 12px;
+        font-size: 20px;
+        margin: 0;
+        border-top-left-radius: 6px;
+        border-bottom-left-radius: 6px;
+      }
+      .button {
+        box-sizing: border-box;
+        display: inline-block;
+        width: 120px;
+        height: 60px;
+        line-height: 60px;
+        padding: 0 12px;
+        background: #3c68ff;
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+        text-align: center;
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
+      }
+      .list {
+        display: flex;
+        flex-wrap: wrap;
+        position:  fixed;
+        width: 100%;
+        bottom:  0;
+      }
+      .item {
+        flex:  1;
+        text-align: center;
+        padding: 10px;
+        border:  dashed 1px #eee;
+        line-height: 1.42;
+        position: relative;
+        min-width: 200px;
+      }
+      .coin {
+        color:  #999;
+        font-size: 18px;
+      }
+      .price {
+        font-size: 30px;
+        padding-left: 10px;
+      }
+      .green {
+        color:  #41b371;
+      }
+      .red {
+        color:  #d74e5a;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="query">
+        <input type="text" name="query" v-model="query" class="input" @keyup.enter="add" autocomplete="off" autocapitalize="off" autocorrect="off" />
+        <span class="button" @click="add">Add</span>
+      </div>
+      <div class="list">
+        <div class="item" v-for="(t,idx) in tickers" :key="idx" @click="remove(t.instId, idx)">
+          <div class="price">{{t.last}}</div>
+          <div class="coin">{{t.coin}}</div>
+          <div class="percent" :class="t.color">{{t.percent}}%</div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            all: [],
+            tickers: [
+                {channel: 'tickers', instId: 'BTC-USDT-SWAP'},
+                {channel: 'tickers', instId: 'ETH-USDT-SWAP'},
+              ],
+            timer: null,
+            socket: new WebSocket('wss://ws.okx.com:8443/ws/v5/public'),
+            query: ''
+          }
+        },
+        created() {
+          // this.updateAll()
+
+          const tickers = this.cache();
+          if(tickers) {
+            this.tickers = tickers
+          }
+
+          this.socket.addEventListener('open', event => {
+            console.log('open')
+            this.socket.send(JSON.stringify({
+              op: 'subscribe',
+              args: this.tickers
+            }));
+          })
+
+          this.socket.addEventListener('message', ({data}) => {
+            if(this.timer) {
+              clearTimeout(this.timer)
+            }
+
+            this.timer = setTimeout(() => {
+              socket.send('ping')
+            }, 20000)
+
+            if(!/{/.test(data)) return
+
+            data = JSON.parse(data);
+            if(data.data) {
+              const d = data.data[0]
+              this.tickers.forEach(t => {
+                if(t.instId === d.instId) {
+                  const coin = d.instId.split('-')[0]
+                  const percent = ((d.last - d.sodUtc8)/d.sodUtc8*100).toFixed(2)
+                  const color = +d.last > +d.sodUtc8 ? 'green' : 'red'
+                  Object.assign(t, d, {coin, percent, color})
+                }
+              })
+            }
+          });
+
+          this.socket.addEventListener('error', event => {
+            console.log(event)
+          });
+
+          this.socket.addEventListener('close', () => {
+            console.log('wss close');
+          });
+        },
+        methods: {
+          updateAll() {
+            fetch('https://www.okx.com/api/v5/market/tickers?instType=SWAP').then(res => res.json()).then(res => this.all = res.data)
+          },
+          add() {
+            const instId = this.query.toUpperCase() + '-USDT-SWAP'
+
+            const isExsiting = this.tickers.find(t => t.instId === instId)
+            if(isExsiting) return
+
+            // const isValid = this.all.find(t => t.instId === instId)
+            // if(!isValid) return
+
+            const arg = {channel: 'tickers', instId}
+            this.tickers.push(arg)
+
+            this.socket.send(JSON.stringify({
+              op: 'subscribe',
+              args: [arg]
+            }));
+
+            this.query = ''
+
+            this.save()
+          },
+          remove(instId, idx) {
+            this.tickers.splice(idx, 1)
+
+            this.socket.send(JSON.stringify({
+              op: 'unsubscribe',
+              args: [{channel: 'tickers', instId}]
+            }));
+
+            this.save()
+          },
+          cache() {
+            let data = localStorage.getItem('tickers')
+            if (data) {
+              data = JSON.parse(data)
+            }
+
+            return data
+          },
+          save() {
+            localStorage.setItem('tickers', JSON.stringify(this.tickers))
+          }
+        }
+      })
+
+      app.mount('#app')
+      
+    </script>
+  </body>
+</html>
