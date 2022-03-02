@@ -18,7 +18,7 @@
         flex: 1;
         box-sizing: border-box;
         outline: none;
-        border: solid 1px #2c68ff;
+        border: solid 1px #eee;
         height: 60px;
         padding: 6px 12px;
         font-size: 20px;
@@ -33,8 +33,8 @@
         height: 60px;
         line-height: 60px;
         padding: 0 12px;
-        background: #3c68ff;
-        color: #fff;
+        background: #eee;
+        color: #333;
         font-size: 20px;
         cursor: pointer;
         text-align: center;
@@ -56,6 +56,24 @@
         line-height: 1.42;
         position: relative;
         min-width: 200px;
+      }
+      .action {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.88);
+        font-size: 24px;
+        color: #fff;
+      }
+      .item:hover .action {
+        cursor: pointer;
+        display: flex;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
       .coin {
         color: #999;
@@ -86,18 +104,14 @@
           autocapitalize="off"
           autocorrect="off"
         />
-        <span class="button" @click="add">Add</span>
+        <span class="button" @click="add">Subscribe</span>
       </div>
       <div class="list">
-        <div
-          class="item"
-          v-for="(t,idx) in tickers"
-          :key="idx"
-          @click="remove(t.instId, idx)"
-        >
+        <div class="item" v-for="(t,idx) in tickers" :key="idx">
           <div class="price">{{t.last}}</div>
           <div class="coin">{{t.coin}}</div>
           <div class="percent" :class="t.color">{{t.percent}}%</div>
+          <div class="action" @click="remove(t.instId, idx)">Unsubscribe</div>
         </div>
       </div>
     </div>
