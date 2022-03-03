@@ -182,7 +182,7 @@
             }
 
             this.timer = setTimeout(() => {
-              socket.send("ping");
+              this.socket.send("ping");
             }, 20000);
 
             if (!/{/.test(data)) return;
