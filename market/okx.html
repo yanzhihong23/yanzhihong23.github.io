@@ -9,6 +9,9 @@
         margin: 0;
         padding: 0;
       }
+      #app {
+        color: #333;
+      }
       .query {
         display: flex;
         align-items: center;
@@ -52,10 +55,13 @@
         flex: 1;
         text-align: center;
         padding: 10px;
-        border: dashed 1px #eee;
         line-height: 1.42;
         position: relative;
         min-width: 200px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
       }
       .action {
         display: none;
@@ -75,18 +81,30 @@
         align-items: center;
         justify-content: center;
       }
+      .item.green {
+        background: linear-gradient(45deg, #41b3712e, transparent);
+      }
+      .item.red {
+        background: linear-gradient(45deg, #d74e5a2e, transparent);
+      }
       .coin {
         color: #999;
         font-size: 18px;
+        font-weight: bold;
+        align-self: flex-start;
       }
       .price {
-        font-size: 30px;
+        font-size: 36px;
         padding-left: 10px;
       }
-      .green {
+      .percent {
+        align-self: flex-end;
+        font-size: 18px;
+      }
+      .green .percent {
         color: #41b371;
       }
-      .red {
+      .red .percent {
         color: #d74e5a;
       }
     </style>
@@ -107,10 +125,15 @@
         <span class="button" @click="add">Subscribe</span>
       </div>
       <div class="list">
-        <div class="item" v-for="(t,idx) in tickers" :key="idx">
-          <div class="price">{{t.last}}</div>
+        <div
+          class="item"
+          :class="t.color"
+          v-for="(t,idx) in tickers"
+          :key="idx"
+        >
           <div class="coin">{{t.coin}}</div>
-          <div class="percent" :class="t.color">{{t.percent}}%</div>
+          <div class="price">{{t.last}}</div>
+          <div class="percent">{{t.percent}}%</div>
           <div class="action" @click="remove(t.instId, idx)">Unsubscribe</div>
         </div>
       </div>
