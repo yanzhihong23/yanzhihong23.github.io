@@ -9,10 +9,15 @@
         margin: 0;
         padding: 0;
       }
+      [v-cloak] {
+        opacity: 0;
+      }
       #app {
         color: #333;
+        display: flex;
       }
       .query {
+        flex: 1;
         display: flex;
         align-items: center;
         padding: 20px;
@@ -21,7 +26,8 @@
         flex: 1;
         box-sizing: border-box;
         outline: none;
-        border: solid 1px #eee;
+        color: rgb(29 155 240);
+        border: solid 1px rgb(29 155 240);
         height: 60px;
         padding: 6px 12px;
         font-size: 20px;
@@ -36,8 +42,8 @@
         height: 60px;
         line-height: 60px;
         padding: 0 12px;
-        background: #eee;
-        color: #333;
+        background: rgb(29 155 240);
+        color: #fff;
         font-size: 20px;
         cursor: pointer;
         text-align: center;
@@ -57,7 +63,7 @@
         padding: 10px;
         line-height: 1.42;
         position: relative;
-        min-width: 200px;
+        min-width: 300px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -90,24 +96,64 @@
         background: linear-gradient(45deg, #d74e5a2e, transparent);
       }
       .coin {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+      }
+      .coin .name {
         color: #999;
         font-size: 22px;
         font-weight: bold;
-        align-self: flex-start;
       }
       .price {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .price .last {
         font-size: 36px;
-        padding-left: 10px;
+      }
+      .coin .vol,
+      .price .high,
+      .price .low {
+        color: #bbb;
+      }
+      .simple .vol,
+      .simple .high,
+      .simple .low {
+        opacity: 0;
       }
       .percent {
         align-self: flex-end;
         font-size: 18px;
       }
+      .actions {
+        padding: 10px;
+      }
+      .round-button {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        background: rgb(29 155 240);
+        cursor: pointer;
+        margin: 10px;
+      }
     </style>
   </head>
   <body>
-    <div id="app">
-      <div class="query">
+    <div id="app" v-cloak>
+      <div class="actions">
+        <div class="round-button" @click="switchSub">Sub</div>
+        <div class="round-button" @click="switchMore">
+          {{showMore?'Simple':'Detail'}}
+        </div>
+      </div>
+      <div class="query" v-show="showSub">
         <input
           type="text"
           name="query"
@@ -120,15 +166,22 @@
         />
         <span class="button" @click="add">Subscribe</span>
       </div>
-      <div class="list">
+      <div class="list" :class="{simple: !showMore}">
         <div
           class="item"
           :class="t.color"
           v-for="(t,idx) in tickers"
           :key="idx"
         >
-          <div class="coin">{{t.coin}}</div>
-          <div class="price">{{t.last}}</div>
+          <div class="coin">
+            <span class="name">{{t.coin}}</span>
+            <span class="vol">{{t.vol}}</span>
+          </div>
+          <div class="price">
+            <div class="high">{{t.high24h}}</div>
+            <div class="last">{{t.last}}</div>
+            <div class="low">{{t.low24h}}</div>
+          </div>
           <div class="percent">{{t.percent}}%</div>
           <div class="action" @click="remove(t.instId, idx)">Unsubscribe</div>
         </div>
@@ -148,6 +201,8 @@
             timer: null,
             socket: new WebSocket("wss://ws.okx.com:8443/ws/v5/public"),
             query: "",
+            showSub: false,
+            showMore: true,
           };
         },
         created() {
@@ -186,6 +241,7 @@
             data = JSON.parse(data);
             if (!data.data) return;
             if (data.arg.channel === "instruments") {
+              console.log(data.data.find((i) => i.instId === "BTC-USDT-SWAP"));
               this.instruments = data.data.map((i) => i.instId);
             } else if (data.arg.channel === "tickers") {
               const d = data.data[0];
@@ -196,8 +252,9 @@
                     ((d.last - d.sodUtc8) / d.sodUtc8) *
                     100
                   ).toFixed(2);
+                  const vol = new Intl.NumberFormat().format(t.volCcy24h);
                   const color = +d.last > +d.sodUtc8 ? "green" : "red";
-                  Object.assign(t, d, { coin, percent, color });
+                  Object.assign(t, d, { coin, percent, color, vol });
                 }
               });
             }
@@ -212,6 +269,12 @@
           });
         },
         methods: {
+          switchSub() {
+            this.showSub = !this.showSub;
+          },
+          switchMore() {
+            this.showMore = !this.showMore;
+          },
           add() {
             const instId = this.query.toUpperCase() + "-USDT-SWAP";
 
