@@ -241,7 +241,6 @@
             data = JSON.parse(data);
             if (!data.data) return;
             if (data.arg.channel === "instruments") {
-              console.log(data.data.find((i) => i.instId === "BTC-USDT-SWAP"));
               this.instruments = data.data.map((i) => i.instId);
             } else if (data.arg.channel === "tickers") {
               const d = data.data[0];
@@ -252,7 +251,11 @@
                     ((d.last - d.sodUtc8) / d.sodUtc8) *
                     100
                   ).toFixed(2);
-                  const vol = new Intl.NumberFormat().format(t.volCcy24h);
+                  const vol = new Intl.NumberFormat("en-GB", {
+                    notation: "compact",
+                    compactDisplay: "short",
+                  }).format(t.volCcy24h * t.last);
+
                   const color = +d.last > +d.sodUtc8 ? "green" : "red";
                   Object.assign(t, d, { coin, percent, color, vol });
                 }
