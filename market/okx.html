@@ -15,10 +15,11 @@
       #app,
       .container {
         height: 100%;
-      }
-      .container {
         color: #333;
+      }
+      .top-bar {
         display: flex;
+        justify-content: space-between;
       }
       .container.dark {
         background: #000;
@@ -56,6 +57,11 @@
         text-align: center;
         border-top-right-radius: 6px;
         border-bottom-right-radius: 6px;
+      }
+      .ratio {
+        padding: 20px;
+        line-height: 50px;
+        font-size: 20px;
       }
       .list {
         display: flex;
@@ -168,27 +174,32 @@
   <body>
     <div id="app" v-cloak>
       <div class="container" :class="{dark: darkMode}">
-        <div class="actions">
-          <div class="round-button" @click="switchTheme">
-            {{darkMode?'Light':'Dark'}}
+        <div class="top-bar">
+          <div class="actions">
+            <div class="round-button" @click="switchTheme">
+              {{darkMode?'Light':'Dark'}}
+            </div>
+            <div class="round-button" @click="switchMore">
+              {{showMore?'Simple':'Detail'}}
+            </div>
+            <div class="round-button" @click="switchSub">Sub</div>
           </div>
-          <div class="round-button" @click="switchMore">
-            {{showMore?'Simple':'Detail'}}
+          <div class="query" v-show="showSub">
+            <input
+              type="text"
+              name="query"
+              v-model="query"
+              class="input"
+              @keyup.enter="add"
+              autocomplete="off"
+              autocapitalize="off"
+              autocorrect="off"
+            />
+            <span class="button" @click="add">Subscribe</span>
           </div>
-          <div class="round-button" @click="switchSub">Sub</div>
-        </div>
-        <div class="query" v-show="showSub">
-          <input
-            type="text"
-            name="query"
-            v-model="query"
-            class="input"
-            @keyup.enter="add"
-            autocomplete="off"
-            autocapitalize="off"
-            autocorrect="off"
-          />
-          <span class="button" @click="add">Subscribe</span>
+          <div class="ratio">
+            BTC Long/Short Ratio: <span style="font-size: 36px">{{ratio}}</span>
+          </div>
         </div>
 
         <div class="list" :class="{simple: !showMore}">
@@ -230,9 +241,12 @@
             showSub: false,
             showMore: true,
             darkMode: localStorage.getItem("darkMode") === "true",
+            ratio: 1,
           };
         },
         created() {
+          this.fetchBTCLongShortRatio();
+
           const tickers = this.cache();
           if (tickers) {
             this.tickers = tickers;
@@ -308,6 +322,17 @@
           switchTheme() {
             this.darkMode = !this.darkMode;
             localStorage.setItem("darkMode", this.darkMode);
+          },
+          fetchBTCLongShortRatio() {
+            fetch(
+              "https://cors.r2d2.to/?https://www.okx.com/api/v5/rubik/stat/contracts/long-short-account-ratio?ccy=BTC"
+            )
+              .then((res) => res.json())
+              .then((res) => {
+                this.ratio = res.data[0][1];
+              });
+
+            setTimeout(this.fetchBTCLongShortRatio, 5 * 60 * 1000);
           },
           add() {
             const instId = this.query.toUpperCase() + "-USDT-SWAP";
