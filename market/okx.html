@@ -12,14 +12,21 @@
       [v-cloak] {
         opacity: 0;
       }
-      #app {
+      #app,
+      .container {
+        height: 100%;
+      }
+      .container {
         color: #333;
         display: flex;
+      }
+      .container.dark {
+        background: #000;
+        color: #fff;
       }
       .query {
         flex: 1;
         display: flex;
-        align-items: center;
         padding: 20px;
       }
       .input {
@@ -80,6 +87,10 @@
         font-size: 24px;
         color: #fff;
       }
+      .dark .action {
+        background: #fff;
+        color: #000;
+      }
       .item:hover .action {
         cursor: pointer;
         display: flex;
@@ -91,9 +102,15 @@
         color: #41b371;
         background: linear-gradient(45deg, #41b3712e, transparent);
       }
+      .dark .item.green {
+        background: linear-gradient(45deg, #41b37166, transparent);
+      }
       .item.red {
         color: #d74e5a;
         background: linear-gradient(45deg, #d74e5a2e, transparent);
+      }
+      .dark .item.red {
+        background: linear-gradient(45deg, #d74e5a66, transparent);
       }
       .coin {
         width: 100%;
@@ -104,6 +121,9 @@
         color: #999;
         font-size: 22px;
         font-weight: bold;
+      }
+      .dark .coin .name {
+        color: #fff;
       }
       .price {
         width: 100%;
@@ -147,43 +167,49 @@
   </head>
   <body>
     <div id="app" v-cloak>
-      <div class="actions">
-        <div class="round-button" @click="switchSub">Sub</div>
-        <div class="round-button" @click="switchMore">
-          {{showMore?'Simple':'Detail'}}
+      <div class="container" :class="{dark: darkMode}">
+        <div class="actions">
+          <div class="round-button" @click="switchSub">Sub</div>
+          <div class="round-button" @click="switchMore">
+            {{showMore?'Simple':'Detail'}}
+          </div>
+          <div class="round-button" @click="switchTheme">
+            {{darkMode?'Light':'Dark'}}
+          </div>
         </div>
-      </div>
-      <div class="query" v-show="showSub">
-        <input
-          type="text"
-          name="query"
-          v-model="query"
-          class="input"
-          @keyup.enter="add"
-          autocomplete="off"
-          autocapitalize="off"
-          autocorrect="off"
-        />
-        <span class="button" @click="add">Subscribe</span>
-      </div>
-      <div class="list" :class="{simple: !showMore}">
-        <div
-          class="item"
-          :class="t.color"
-          v-for="(t,idx) in tickers"
-          :key="idx"
-        >
-          <div class="coin">
-            <span class="name">{{t.coin}}</span>
-            <span class="vol">{{t.vol}}</span>
+        <div class="query" v-show="showSub">
+          <input
+            type="text"
+            name="query"
+            v-model="query"
+            class="input"
+            @keyup.enter="add"
+            autocomplete="off"
+            autocapitalize="off"
+            autocorrect="off"
+          />
+          <span class="button" @click="add">Subscribe</span>
+        </div>
+
+        <div class="list" :class="{simple: !showMore}">
+          <div
+            class="item"
+            :class="t.color"
+            v-for="(t,idx) in tickers"
+            :key="idx"
+          >
+            <div class="coin">
+              <span class="name">{{t.coin}}</span>
+              <span class="vol">{{t.vol}}</span>
+            </div>
+            <div class="price">
+              <div class="high">{{t.high24h}}</div>
+              <div class="last">{{t.last}}</div>
+              <div class="low">{{t.low24h}}</div>
+            </div>
+            <div class="percent">{{t.percent}}%</div>
+            <div class="action" @click="remove(t.instId, idx)">Unsubscribe</div>
           </div>
-          <div class="price">
-            <div class="high">{{t.high24h}}</div>
-            <div class="last">{{t.last}}</div>
-            <div class="low">{{t.low24h}}</div>
-          </div>
-          <div class="percent">{{t.percent}}%</div>
-          <div class="action" @click="remove(t.instId, idx)">Unsubscribe</div>
         </div>
       </div>
     </div>
@@ -203,6 +229,7 @@
             query: "",
             showSub: false,
             showMore: true,
+            darkMode: localStorage.getItem("darkMode") === "true",
           };
         },
         created() {
@@ -277,6 +304,10 @@
           },
           switchMore() {
             this.showMore = !this.showMore;
+          },
+          switchTheme() {
+            this.darkMode = !this.darkMode;
+            localStorage.setItem("darkMode", this.darkMode);
           },
           add() {
             const instId = this.query.toUpperCase() + "-USDT-SWAP";
