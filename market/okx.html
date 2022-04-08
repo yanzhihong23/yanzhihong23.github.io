@@ -198,7 +198,9 @@
             <span class="button" @click="add">Subscribe</span>
           </div>
           <div class="ratio">
-            BTC Long/Short Ratio: <span style="font-size: 36px">{{ratio}}</span>
+            BTC L/S Ratio:
+            <span style="font-size: 36px">{{btcRatio}}</span> ETH L/S Ratio:
+            <span style="font-size: 36px">{{ethRatio}}</span>
           </div>
         </div>
 
@@ -241,7 +243,8 @@
             showSub: false,
             showMore: true,
             darkMode: localStorage.getItem("darkMode") === "true",
-            ratio: 1,
+            btcRatio: 1,
+            ethRatio: 1,
           };
         },
         created() {
@@ -323,16 +326,20 @@
             this.darkMode = !this.darkMode;
             localStorage.setItem("darkMode", this.darkMode);
           },
-          fetchBTCLongShortRatio() {
-            fetch(
-              "https://cors.r2d2.to/?https://www.okx.com/api/v5/rubik/stat/contracts/long-short-account-ratio?ccy=BTC"
-            )
-              .then((res) => res.json())
-              .then((res) => {
-                this.ratio = res.data[0][1];
-              });
+          async fetchBTCLongShortRatio() {
+            this.btcRatio = await this.fetchRatio("BTC");
+            this.ethRatio = await this.fetchRatio("ETH");
 
             setTimeout(this.fetchBTCLongShortRatio, 5 * 60 * 1000);
+          },
+          async fetchRatio(coin) {
+            const res = await fetch(
+              `https://cors.r2d2.to/?https://www.okx.com/api/v5/rubik/stat/contracts/long-short-account-ratio?ccy=${coin.toUpperCase()}`
+            );
+
+            const data = await res.json();
+
+            return data.data[0][1];
           },
           add() {
             const instId = this.query.toUpperCase() + "-USDT-SWAP";
