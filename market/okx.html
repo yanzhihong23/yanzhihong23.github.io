@@ -59,9 +59,13 @@
         border-bottom-right-radius: 6px;
       }
       .ratio {
+        width: 350px;
         padding: 20px;
         line-height: 50px;
-        font-size: 20px;
+        font-size: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
       }
       .list {
         display: flex;
@@ -198,9 +202,21 @@
             <span class="button" @click="add">Subscribe</span>
           </div>
           <div class="ratio">
-            BTC L/S Ratio:
-            <span style="font-size: 36px">{{btcRatio}}</span> ETH L/S Ratio:
-            <span style="font-size: 36px">{{ethRatio}}</span>
+            Ratio:
+            <img
+              src="https://s2.coinmarketcap.com/static/img/coins/64x64/1.png"
+              width="36"
+              height="36"
+              alt=""
+            />
+            {{btcRatio}}
+            <img
+              src="https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png"
+              width="36"
+              height="36"
+              alt=""
+            />
+            {{ethRatio}}
           </div>
         </div>
 
