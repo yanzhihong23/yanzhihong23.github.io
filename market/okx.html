@@ -169,13 +169,13 @@
     <div id="app" v-cloak>
       <div class="container" :class="{dark: darkMode}">
         <div class="actions">
-          <div class="round-button" @click="switchSub">Sub</div>
-          <div class="round-button" @click="switchMore">
-            {{showMore?'Simple':'Detail'}}
-          </div>
           <div class="round-button" @click="switchTheme">
             {{darkMode?'Light':'Dark'}}
           </div>
+          <div class="round-button" @click="switchMore">
+            {{showMore?'Simple':'Detail'}}
+          </div>
+          <div class="round-button" @click="switchSub">Sub</div>
         </div>
         <div class="query" v-show="showSub">
           <input
