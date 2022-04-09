@@ -14,12 +14,18 @@
       }
       #app,
       .container {
-        height: 100%;
+        min-height: 100%;
         color: #333;
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
       }
       .top-bar {
         display: flex;
         justify-content: space-between;
+        flex-wrap: wrap;
       }
       .container.dark {
         background: #000;
@@ -59,10 +65,10 @@
         border-bottom-right-radius: 6px;
       }
       .ratio {
-        width: 350px;
+        width: 300px;
         padding: 20px;
         line-height: 50px;
-        font-size: 36px;
+        font-size: 30px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -70,9 +76,6 @@
       .list {
         display: flex;
         flex-wrap: wrap;
-        position: fixed;
-        width: 100%;
-        bottom: 0;
       }
       .item {
         flex: 1;
@@ -205,15 +208,15 @@
             Ratio:
             <img
               src="https://s2.coinmarketcap.com/static/img/coins/64x64/1.png"
-              width="36"
-              height="36"
+              width="30"
+              height="30"
               alt=""
             />
-            {{btcRatio}}
+            <span style="padding-right: 20px">{{btcRatio}}</span>
             <img
               src="https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png"
-              width="36"
-              height="36"
+              width="30"
+              height="30"
               alt=""
             />
             {{ethRatio}}
