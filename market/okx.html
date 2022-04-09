@@ -38,6 +38,8 @@
       }
       .input {
         flex: 1;
+        /* fix mobile style */
+        width: 100px;
         box-sizing: border-box;
         outline: none;
         color: rgb(29 155 240);
@@ -48,6 +50,8 @@
         margin: 0;
         border-top-left-radius: 6px;
         border-bottom-left-radius: 6px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
       }
       .button {
         box-sizing: border-box;
@@ -189,6 +193,7 @@
             <div class="round-button" @click="switchMore">
               {{showMore?'Simple':'Detail'}}
             </div>
+            <div class="round-button" @click="reload">Reload</div>
             <div class="round-button" @click="switchSub">Sub</div>
           </div>
           <div class="query" v-show="showSub">
@@ -325,6 +330,9 @@
           });
         },
         methods: {
+          reload() {
+            location.reload();
+          },
           switchSub() {
             this.showSub = !this.showSub;
           },
