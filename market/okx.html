@@ -77,6 +77,12 @@
         align-items: center;
         justify-content: space-between;
       }
+      .fgi {
+        font-size: 30px;
+        display: flex;
+        align-items: center;
+        padding: 20px;
+      }
       .list {
         display: flex;
         flex-wrap: wrap;
@@ -194,6 +200,7 @@
               {{showMore?'Simple':'Detail'}}
             </div>
             <div class="round-button" @click="reload">Reload</div>
+            <div class="round-button" @click="switchFGI">FGI</div>
             <div class="round-button" @click="switchSub">Sub</div>
           </div>
           <div class="query" v-show="showSub">
@@ -208,6 +215,9 @@
               autocorrect="off"
             />
             <span class="button" @click="add">Subscribe</span>
+          </div>
+          <div class="fgi" v-show="showFGI">
+            FGI: {{fgi.value}}({{fgi.value_classification}})
           </div>
           <div class="ratio">
             Ratio:
@@ -259,9 +269,12 @@
             darkMode: localStorage.getItem("darkMode") === "true",
             btcRatio: 1,
             ethRatio: 1,
+            showFGI: false,
+            fgi: {},
           };
         },
         created() {
+          this.fetchFGI();
           this.fetchBTCLongShortRatio();
 
           const tickers = this.cache();
@@ -342,6 +355,18 @@
           switchTheme() {
             this.darkMode = !this.darkMode;
             localStorage.setItem("darkMode", this.darkMode);
+          },
+          switchFGI() {
+            this.showFGI = !this.showFGI;
+            if (this.showFGI) {
+              this.fetchFGI();
+            }
+          },
+          async fetchFGI() {
+            const res = await fetch("https://api.alternative.me/fng/");
+            const data = await res.json();
+
+            if (data) this.fgi = data.data[0];
           },
           async fetchBTCLongShortRatio() {
             this.btcRatio = await this.fetchRatio("BTC");
