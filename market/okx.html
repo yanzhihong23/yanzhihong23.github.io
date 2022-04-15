@@ -15,7 +15,7 @@
       #app,
       .container {
         min-height: 100%;
-        color: #1d9bf0d9;
+        color: #999;
       }
       .container {
         display: flex;
@@ -26,9 +26,11 @@
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
+        font-family: fantasy;
       }
       .container.dark {
         background: #000;
+        color: #fff;
       }
       .query {
         flex: 1;
@@ -41,12 +43,13 @@
         width: 100px;
         box-sizing: border-box;
         outline: none;
-        color: rgb(29 155 240);
-        background: #1d9bf021;
+        color: #41b371;
+        background: #41b37140;
         border: none;
         height: 60px;
         padding: 6px 12px;
         font-size: 20px;
+        font-family: fantasy;
         margin: 0;
         border-top-left-radius: 6px;
         border-bottom-left-radius: 6px;
@@ -60,7 +63,7 @@
         height: 60px;
         line-height: 60px;
         padding: 0 12px;
-        background: linear-gradient(45deg, #1d9bf0d9, transparent);
+        background: linear-gradient(45deg, #41b371e0, transparent);
         color: #fff;
         font-size: 20px;
         cursor: pointer;
@@ -121,15 +124,19 @@
         align-items: center;
         justify-content: center;
       }
-      .item.green {
+      .green {
         color: #41b371;
+      }
+      .red {
+        color: #d74e5a;
+      }
+      .item.green {
         background: linear-gradient(45deg, #41b3712e, transparent);
       }
       .dark .item.green {
         background: linear-gradient(45deg, #41b37166, transparent);
       }
       .item.red {
-        color: #d74e5a;
         background: linear-gradient(45deg, #d74e5a2e, transparent);
       }
       .dark .item.red {
@@ -141,6 +148,7 @@
         justify-content: space-between;
       }
       .coin .name {
+        font-family: fantasy;
         color: #999;
         font-size: 22px;
         font-weight: bold;
@@ -182,7 +190,7 @@
         align-items: center;
         justify-content: center;
         color: #fff;
-        background: linear-gradient(45deg, #1d9bf0d9, transparent);
+        background: linear-gradient(45deg, #41b371e0, transparent);
         cursor: pointer;
         margin: 10px;
       }
@@ -217,14 +225,19 @@
             <span class="button" @click="add">Subscribe</span>
           </div>
           <div class="fgi" v-show="showFGI">
-            FGI: {{fgi.value}}({{fgi.value_classification}})
+            FGI:&nbsp;
+            <span :style="{color: fgi.color}">
+              {{fgi.value}} ({{fgi.value_classification}})</span
+            >
           </div>
           <div class="ratio">
             Ratio:
             <img src="./images/btc.png" width="30" height="30" alt="" />
-            <span style="padding-right: 20px">{{btcRatio}}</span>
+            <span style="padding-right: 20px" :class="btcRatio.color"
+              >{{btcRatio.value}}</span
+            >
             <img src="./images/eth.png" width="30" height="30" alt="" />
-            {{ethRatio}}
+            <span :class="ethRatio.color">{{ethRatio.value}}</span>
           </div>
         </div>
 
@@ -253,6 +266,39 @@
 
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script>
+      function fngColouring(indexValue) {
+        let colorCode = "";
+        if (indexValue >= 90) {
+          colorCode = "65c64c";
+        }
+        if (indexValue < 90) {
+          colorCode = "79d23c";
+        }
+        if (indexValue <= 75) {
+          colorCode = "9bbe44";
+        }
+        if (indexValue <= 63) {
+          colorCode = "c6bf22";
+        }
+        if (indexValue <= 54) {
+          colorCode = "dfce60";
+        }
+        if (indexValue <= 46) {
+          colorCode = "d8bc59";
+        }
+        if (indexValue <= 35) {
+          colorCode = "e39d64";
+        }
+        if (indexValue <= 25) {
+          colorCode = "d17339";
+        }
+        if (indexValue <= 10) {
+          colorCode = "b74d34";
+        }
+
+        return "#" + colorCode;
+      }
+
       const app = Vue.createApp({
         data() {
           return {
@@ -267,8 +313,8 @@
             showSub: false,
             showMore: true,
             darkMode: localStorage.getItem("darkMode") === "true",
-            btcRatio: 1,
-            ethRatio: 1,
+            btcRatio: { value: 1, color: "" },
+            ethRatio: { value: 1, color: "" },
             showFGI: false,
             fgi: {},
           };
@@ -366,7 +412,10 @@
             const res = await fetch("https://api.alternative.me/fng/");
             const data = await res.json();
 
-            if (data) this.fgi = data.data[0];
+            if (data) {
+              this.fgi = data.data[0];
+              this.fgi.color = fngColouring(this.fgi.value);
+            }
           },
           async fetchBTCLongShortRatio() {
             this.btcRatio = await this.fetchRatio("BTC");
@@ -380,8 +429,10 @@
             );
 
             const data = await res.json();
+            const value = data.data[0][1];
+            const color = +value > 1 ? "red" : "green";
 
-            return data.data[0][1];
+            return { value, color };
           },
           add() {
             const instId = this.query.toUpperCase() + "-USDT-SWAP";
