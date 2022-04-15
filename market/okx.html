@@ -80,6 +80,7 @@
         align-items: center;
         justify-content: space-between;
       }
+      .time,
       .fgi {
         font-size: 30px;
         display: flex;
@@ -223,6 +224,7 @@
             />
             <span class="button" @click="add">Subscribe</span>
           </div>
+          <div class="time">{{this.time}}</div>
           <div class="fgi" v-show="showFGI">
             FGI:&nbsp;
             <span :style="{color: fgi.color}">
@@ -316,9 +318,11 @@
             ethRatio: { value: 1, color: "" },
             showFGI: false,
             fgi: {},
+            time: "",
           };
         },
         created() {
+          this.clock();
           this.fetchFGI();
           this.fetchBTCLongShortRatio();
 
@@ -388,6 +392,12 @@
           });
         },
         methods: {
+          clock() {
+            const date = new Date().toTimeString();
+            this.time = date.split(" ")[0];
+
+            setTimeout(this.clock, 1000);
+          },
           reload() {
             location.reload();
           },
