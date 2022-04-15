@@ -26,7 +26,7 @@
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
-        font-family: fantasy;
+        font-family: cursive;
       }
       .container.dark {
         background: #000;
@@ -49,7 +49,7 @@
         height: 60px;
         padding: 6px 12px;
         font-size: 20px;
-        font-family: fantasy;
+        font-family: cursive;
         margin: 0;
         border-top-left-radius: 6px;
         border-bottom-left-radius: 6px;
@@ -148,7 +148,6 @@
         justify-content: space-between;
       }
       .coin .name {
-        font-family: fantasy;
         color: #999;
         font-size: 22px;
         font-weight: bold;
@@ -183,8 +182,8 @@
         padding: 10px;
       }
       .round-button {
-        width: 60px;
-        height: 60px;
+        width: 58px;
+        height: 58px;
         border-radius: 50%;
         display: inline-flex;
         align-items: center;
@@ -435,7 +434,7 @@
             return { value, color };
           },
           add() {
-            const instId = this.query.toUpperCase() + "-USDT-SWAP";
+            const instId = this.query.toUpperCase().trim() + "-USDT-SWAP";
 
             const isExsiting = this.tickers.find((t) => t.instId === instId);
             if (isExsiting) return;
