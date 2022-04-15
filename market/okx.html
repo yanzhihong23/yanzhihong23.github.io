@@ -192,7 +192,7 @@
         color: #fff;
         background: linear-gradient(45deg, #41b371e0, transparent);
         cursor: pointer;
-        margin: 10px;
+        margin: 6px;
       }
     </style>
   </head>
@@ -267,37 +267,38 @@
 
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script>
-      function fngColouring(indexValue) {
-        let colorCode = "";
-        if (indexValue >= 90) {
-          colorCode = "65c64c";
-        }
-        if (indexValue < 90) {
-          colorCode = "79d23c";
-        }
-        if (indexValue <= 75) {
-          colorCode = "9bbe44";
-        }
-        if (indexValue <= 63) {
-          colorCode = "c6bf22";
-        }
-        if (indexValue <= 54) {
-          colorCode = "dfce60";
-        }
-        if (indexValue <= 46) {
-          colorCode = "d8bc59";
-        }
-        if (indexValue <= 35) {
-          colorCode = "e39d64";
-        }
-        if (indexValue <= 25) {
-          colorCode = "d17339";
-        }
-        if (indexValue <= 10) {
-          colorCode = "b74d34";
+      function fngColouring(val) {
+        let color = "";
+        switch (true) {
+          case val >= 90:
+            color = "65c64c";
+            break;
+          case val >= 75:
+            color = "79d23c";
+            break;
+          case val >= 63:
+            color = "9bbe44";
+            break;
+          case val >= 54:
+            color = "c6bf22";
+            break;
+          case val >= 46:
+            color = "dfce60";
+            break;
+          case val >= 35:
+            color = "d8bc59";
+            break;
+          case val >= 25:
+            color = "e39d64";
+            break;
+          case val >= 10:
+            color = "d17339";
+            break;
+          default:
+            color = "b74d34";
         }
 
-        return "#" + colorCode;
+        return "#" + color;
       }
 
       const app = Vue.createApp({
