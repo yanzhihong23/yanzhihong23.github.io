@@ -115,15 +115,15 @@
         color: #fff;
       }
       .dark .action {
-        background: #fff;
         color: #000;
       }
       .item:hover .action {
-        cursor: pointer;
-        display: flex;
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: space-evenly;
+      }
+      .action img {
+        cursor: pointer;
       }
       .green {
         color: #41b371;
@@ -259,7 +259,20 @@
               <div class="low">{{t.low24h}}</div>
             </div>
             <div class="percent">{{t.percent}}%</div>
-            <div class="action" @click="remove(t.instId, idx)">Unsubscribe</div>
+            <div class="action">
+              <img
+                src="./images/chart.png"
+                @click="viewChart(t.coin)"
+                width="60"
+                alt=""
+              />
+              <img
+                src="./images/unsubscribe.png"
+                width="60"
+                @click="remove(t.instId, idx)"
+                alt=""
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -478,6 +491,10 @@
             );
 
             this.save();
+          },
+          viewChart(coin) {
+            const url = `https://www.aicoin.com/chart/okcoinfutures_${coin.toLowerCase()}swapusdt`;
+            window.open(url, "_blank").focus();
           },
           cache() {
             let data = localStorage.getItem("tickers");
