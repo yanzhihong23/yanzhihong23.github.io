@@ -156,6 +156,13 @@
       .dark .coin .name {
         color: #fff;
       }
+      .logo-name {
+        display: flex;
+        align-items: center;
+      }
+      .logo {
+        margin-right: 5px;
+      }
       .price {
         align-items: center;
       }
@@ -246,7 +253,12 @@
             :key="idx"
           >
             <div class="line coin">
-              <span class="name">{{t.coin}}</span>
+              <div class="logo-name">
+                <img width="24" :src="t.logo" alt="logo" class="logo" /><span
+                  class="name"
+                  >{{t.coin}}</span
+                >
+              </div>
               <span class="vol">{{t.vol}}</span>
             </div>
             <div class="line price">
@@ -390,9 +402,10 @@
                   }).format(t.volCcy24h * t.last);
                   let dif = new Intl.NumberFormat().format(d.last - d.sodUtc8);
                   if (dif > 0) dif = "+" + dif;
+                  const logo = `https://static.okx.com/cdn/oksupport/asset/currency/icon/${coin.toLowerCase()}.png?x-oss-process=image/format,webp`;
 
                   const color = +d.last > +d.sodUtc8 ? "green" : "red";
-                  Object.assign(t, d, { coin, percent, color, vol, dif });
+                  Object.assign(t, d, { coin, percent, color, vol, dif, logo });
                 }
               });
             }
@@ -496,6 +509,9 @@
           viewChart(coin) {
             const url = `https://www.aicoin.com/chart/okcoinfutures_${coin.toLowerCase()}swapusdt`;
             window.open(url, "_blank").focus();
+          },
+          logo(coin) {
+            return `https://static.okx.com/cdn/oksupport/asset/currency/icon/${coin.toLowerCase()}.png?x-oss-process=image/format,webp`;
           },
           cache() {
             let data = localStorage.getItem("tickers");
