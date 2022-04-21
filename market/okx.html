@@ -143,7 +143,7 @@
       .dark .item.red {
         background: linear-gradient(45deg, #d74e5a66, transparent);
       }
-      .coin {
+      .line {
         width: 100%;
         display: flex;
         justify-content: space-between;
@@ -157,11 +157,7 @@
         color: #fff;
       }
       .price {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
         align-items: center;
-        flex-direction: row-reverse;
       }
       .price .last {
         font-size: 36px;
@@ -176,8 +172,7 @@
       .simple .low {
         opacity: 0;
       }
-      .percent {
-        align-self: flex-end;
+      .change {
         font-size: 18px;
       }
       .actions {
@@ -250,16 +245,19 @@
             v-for="(t,idx) in tickers"
             :key="idx"
           >
-            <div class="coin">
+            <div class="line coin">
               <span class="name">{{t.coin}}</span>
               <span class="vol">{{t.vol}}</span>
             </div>
-            <div class="price">
-              <div class="high">{{t.high24h}}</div>
-              <div class="last">{{t.last}}</div>
+            <div class="line price">
               <div class="low">{{t.low24h}}</div>
+              <div class="last">{{t.last}}</div>
+              <div class="high">{{t.high24h}}</div>
             </div>
-            <div class="percent">{{t.percent}}%</div>
+            <div class="line change">
+              <span>{{t.dif}}</span>
+              <span>{{t.percent}}%</span>
+            </div>
             <div class="action">
               <img
                 src="./images/chart.png"
@@ -390,9 +388,11 @@
                     notation: "compact",
                     compactDisplay: "short",
                   }).format(t.volCcy24h * t.last);
+                  let dif = new Intl.NumberFormat().format(d.last - d.sodUtc8);
+                  if (dif > 0) dif = "+" + dif;
 
                   const color = +d.last > +d.sodUtc8 ? "green" : "red";
-                  Object.assign(t, d, { coin, percent, color, vol });
+                  Object.assign(t, d, { coin, percent, color, vol, dif });
                 }
               });
             }
