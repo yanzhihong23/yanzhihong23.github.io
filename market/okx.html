@@ -393,16 +393,14 @@
               this.tickers.forEach((t) => {
                 if (t.instId === d.instId) {
                   const coin = d.instId.split("-")[0];
-                  const percent = (
-                    ((d.last - d.sodUtc8) / d.sodUtc8) *
-                    100
-                  ).toFixed(2);
+                  const change = d.last - d.sodUtc8;
+                  const percent = ((change / d.sodUtc8) * 100).toFixed(2);
                   const vol = new Intl.NumberFormat("en-GB", {
                     notation: "compact",
                     compactDisplay: "short",
                   }).format(t.volCcy24h * t.last);
-                  let dif = new Intl.NumberFormat().format(d.last - d.sodUtc8);
-                  if (dif > 0) dif = "+" + dif;
+                  let dif = new Intl.NumberFormat().format(change);
+                  if (change > 0) dif = "+" + dif;
                   const logo = `https://static.okx.com/cdn/oksupport/asset/currency/icon/${coin.toLowerCase()}.png?x-oss-process=image/format,webp`;
 
                   const color = +d.last > +d.sodUtc8 ? "green" : "red";
