@@ -212,10 +212,11 @@
             </div>
             <div class="round-button" @click="reload">Reload</div>
             <div class="round-button" @click="switchFGI">FGI</div>
-            <div class="round-button" @click="switchSub">Sub</div>
+            <div class="round-button" @click="switchSub">Subs</div>
           </div>
-          <div class="query" v-show="showSub">
+          <div class="query" v-show="showSubs">
             <input
+              ref="input"
               type="text"
               name="query"
               v-model="query"
@@ -336,7 +337,7 @@
             timer: null,
             socket: new WebSocket("wss://ws.okx.com:8443/ws/v5/public"),
             query: "",
-            showSub: false,
+            showSubs: false,
             showMore: true,
             darkMode: localStorage.getItem("darkMode") === "true",
             btcRatio: { value: 1, color: "" },
@@ -430,7 +431,12 @@
             location.reload();
           },
           switchSub() {
-            this.showSub = !this.showSub;
+            this.showSubs = !this.showSubs;
+            if (this.showSubs) {
+              setTimeout(() => {
+                this.$refs.input.focus();
+              });
+            }
           },
           switchMore() {
             this.showMore = !this.showMore;
@@ -491,6 +497,7 @@
             );
 
             this.query = "";
+            this.showSubs = false;
 
             this.save();
           },
