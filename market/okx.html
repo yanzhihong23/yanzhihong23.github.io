@@ -459,10 +459,10 @@
             }
           },
           async fetchBTCLongShortRatio() {
+            setTimeout(this.fetchBTCLongShortRatio, 5 * 60 * 1000);
+
             this.btcRatio = await this.fetchRatio("BTC");
             this.ethRatio = await this.fetchRatio("ETH");
-
-            setTimeout(this.fetchBTCLongShortRatio, 5 * 60 * 1000);
           },
           async fetchRatio(coin) {
             const res = await fetch(
