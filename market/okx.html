@@ -463,9 +463,9 @@
 
             this.btcRatio = await this.fetchRatio("BTC");
 
-            setTimeout(() => {
+            setTimeout(async () => {
               this.ethRatio = await this.fetchRatio("ETH");
-            }, 2000)
+            }, 2000);
           },
           async fetchRatio(coin) {
             const res = await fetch(
