@@ -335,7 +335,7 @@
               { channel: "tickers", instId: "ETH-USDT-SWAP" },
             ],
             timer: null,
-            socket: new WebSocket("wss://ws.okx.com:8443/ws/v5/public"),
+            socket: null,
             query: "",
             showSubs: false,
             showMore: true,
@@ -350,75 +350,88 @@
         created() {
           this.clock();
           this.fetchFGI();
-          this.fetchBTCLongShortRatio();
+          this.fetchRatios();
 
           const tickers = this.cache();
           if (tickers) {
             this.tickers = tickers;
           }
 
-          this.socket.addEventListener("open", (event) => {
-            console.log("open");
-            this.socket.send(
-              JSON.stringify({
-                op: "subscribe",
-                args: [
-                  {
-                    channel: "instruments",
-                    instType: "SWAP",
-                  },
-                  ...this.tickers,
-                ],
-              })
-            );
-          });
+          this.connect();
 
-          this.socket.addEventListener("message", ({ data }) => {
-            if (this.timer) {
-              clearTimeout(this.timer);
-            }
+          document.onvisibilitychange = () => {
+            if (document.hidden || this.socket.readyState === 1) return;
 
-            this.timer = setTimeout(() => {
-              this.socket.send("ping");
-            }, 20000);
-
-            if (!/{/.test(data)) return;
-
-            data = JSON.parse(data);
-            if (!data.data) return;
-            if (data.arg.channel === "instruments") {
-              this.instruments = data.data.map((i) => i.instId);
-            } else if (data.arg.channel === "tickers") {
-              const d = data.data[0];
-              this.tickers.forEach((t) => {
-                if (t.instId === d.instId) {
-                  const coin = d.instId.split("-")[0];
-                  const change = d.last - d.sodUtc8;
-                  const percent = ((change / d.sodUtc8) * 100).toFixed(2);
-                  const vol = new Intl.NumberFormat("en-GB", {
-                    notation: "compact",
-                    compactDisplay: "short",
-                  }).format(t.volCcy24h * t.last);
-                  let dif = new Intl.NumberFormat().format(change);
-                  if (change > 0) dif = "+" + dif;
-                  const logo = `https://static.okx.com/cdn/oksupport/asset/currency/icon/${coin.toLowerCase()}.png?x-oss-process=image/format,webp`;
-
-                  const color = +d.last > +d.sodUtc8 ? "green" : "red";
-                  Object.assign(t, d, { coin, percent, color, vol, dif, logo });
-                }
-              });
-            }
-          });
-
-          this.socket.addEventListener("error", (event) => {
-            console.log(event);
-          });
-
-          this.socket.addEventListener("close", () => {
-            console.log("wss close");
-          });
+            this.connect();
+          };
         },
         methods: {
+          connect() {
+            const ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public");
+            this.socket = ws;
+
+            ws.onopen = (event) => {
+              ws.send(
+                JSON.stringify({
+                  op: "subscribe",
+                  args: [
+                    {
+                      channel: "instruments",
+                      instType: "SWAP",
+                    },
+                    ...this.tickers,
+                  ],
+                })
+              );
+            };
+
+            ws.onmessage = ({ data }) => {
+              if (this.timer) {
+                clearTimeout(this.timer);
+              }
+
+              this.timer = setTimeout(() => {
+                ws.send("ping");
+              }, 20000);
+
+              if (!/{/.test(data)) return;
+
+              data = JSON.parse(data);
+              if (!data.data) return;
+              if (data.arg.channel === "instruments") {
+                this.instruments = data.data.map((i) => i.instId);
+              } else if (data.arg.channel === "tickers") {
+                const d = data.data[0];
+                this.tickers.forEach((t) => {
+                  if (t.instId === d.instId) {
+                    const coin = d.instId.split("-")[0];
+                    const change = d.last - d.sodUtc8;
+                    const percent = ((change / d.sodUtc8) * 100).toFixed(2);
+                    const vol = new Intl.NumberFormat("en-GB", {
+                      notation: "compact",
+                      compactDisplay: "short",
+                    }).format(t.volCcy24h * t.last);
+                    let dif = new Intl.NumberFormat().format(change);
+                    if (change > 0) dif = "+" + dif;
+                    const logo = `https://static.okx.com/cdn/oksupport/asset/currency/icon/${coin.toLowerCase()}.png?x-oss-process=image/format,webp`;
+
+                    const color = +d.last > +d.sodUtc8 ? "green" : "red";
+                    Object.assign(t, d, {
+                      coin,
+                      percent,
+                      color,
+                      vol,
+                      dif,
+                      logo,
+                    });
+                  }
+                });
+              }
+            };
+
+            ws.onclose = () => this.connect();
+            ws.onerror = () => this.connect();
+          },
           clock() {
             const date = new Date().toTimeString();
             this.time = date.split(" ")[0];
@@ -458,8 +471,8 @@
               this.fgi.color = fngColouring(this.fgi.value);
             }
           },
-          async fetchBTCLongShortRatio() {
-            setTimeout(this.fetchBTCLongShortRatio, 5 * 60 * 1000);
+          async fetchRatios() {
+            setTimeout(this.fetchRatios, 5 * 60 * 1000);
 
             this.btcRatio = await this.fetchRatio("BTC");
 
@@ -473,6 +486,8 @@
             );
 
             const data = await res.json();
+            if (!data) return {};
+
             const value = data.data[0][1];
             const color = +value > 1 ? "red" : "green";
 
