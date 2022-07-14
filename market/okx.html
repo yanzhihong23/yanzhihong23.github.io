@@ -349,8 +349,6 @@
         },
         created() {
           this.clock();
-          this.fetchFGI();
-          this.fetchRatios();
 
           const tickers = this.cache();
           if (tickers) {
@@ -364,9 +362,22 @@
 
             this.connect();
           };
+
+          window.onbeforeunload = () => {
+            if (this.socket) {
+              this.socket.onclose = () => {};
+              this.socket.close();
+            }
+          };
+        },
+        mounted() {
+          this.fetchFGI();
+          this.fetchRatios();
         },
         methods: {
           connect() {
+            if (this.socket) this.socket.close();
+
             const ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public");
             this.socket = ws;
 
@@ -439,6 +450,7 @@
             setTimeout(this.clock, 1000);
           },
           reload() {
+            if (this.socket) this.socket.close();
             location.reload();
           },
           switchSub() {
