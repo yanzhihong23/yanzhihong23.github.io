@@ -506,7 +506,7 @@
             );
 
             const data = await res.json();
-            if (!data || !data.data) return {};
+            if (!data || !data.data) return { value: 1, color: "" };
 
             const value = data.data[0][1];
             const color = +value > 1 ? "red" : "green";
