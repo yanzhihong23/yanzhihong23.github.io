@@ -346,6 +346,7 @@
             showFGI: false,
             fgi: {},
             time: "",
+            connectCount: 0,
           };
         },
         created() {
@@ -378,7 +379,9 @@
         methods: {
           connect() {
             if (this.socket) this.socket.close();
-            this.socket = null;
+
+            this.connectCount++;
+            if (this.connectCount > 5) location.reload();
 
             const ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public");
             this.socket = ws;
