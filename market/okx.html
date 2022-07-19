@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8" />
@@ -14,7 +15,7 @@
       }
       #app,
       .container {
-        min-height: 100%;
+        min-height: 100vh;
         color: #999;
       }
       .container {
@@ -377,6 +378,7 @@
         methods: {
           connect() {
             if (this.socket) this.socket.close();
+            this.socket = null;
 
             const ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public");
             this.socket = ws;
@@ -440,8 +442,14 @@
               }
             };
 
-            ws.onclose = () => this.connect();
-            ws.onerror = () => this.connect();
+            ws.onclose = () => {
+              console.log("ws close");
+              this.connect();
+            };
+            ws.onerror = (err) => {
+              console.log("ws error", err);
+              this.connect();
+            };
           },
           clock() {
             const date = new Date().toTimeString();
@@ -498,7 +506,7 @@
             );
 
             const data = await res.json();
-            if (!data) return {};
+            if (!data || !data.data) return {};
 
             const value = data.data[0][1];
             const color = +value > 1 ? "red" : "green";
