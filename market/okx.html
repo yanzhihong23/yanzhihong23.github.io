@@ -212,7 +212,8 @@
             <div class="round-button" @click="switchMore">
               {{showMore?'Simple':'Detail'}}
             </div>
-            <div class="round-button" @click="reload">Reload</div>
+            <!-- <div class="round-button" @click="reload">Reload</div> -->
+            <div class="round-button" @click="switchMode">{{modeName}}</div>
             <div class="round-button" @click="switchFGI">FGI</div>
             <div class="round-button" @click="switchSub">Subs</div>
           </div>
@@ -328,6 +329,8 @@
         return "#" + color;
       }
 
+      const modes = ["UTC8", "UTC0", "24H"];
+
       const app = Vue.createApp({
         data() {
           return {
@@ -348,7 +351,13 @@
             fgi: {},
             time: "",
             connectCount: 0,
+            openMode: +localStorage.getItem("openMode") || 0,
           };
+        },
+        computed: {
+          modeName() {
+            return modes[this.openMode];
+          },
         },
         created() {
           this.clock();
@@ -421,9 +430,11 @@
                 const d = data.data[0];
                 this.tickers.forEach((t) => {
                   if (t.instId === d.instId) {
+                    const keys = ["sodUtc8", "sodUtc0", "open24h"];
+                    const open = d[keys[this.openMode]];
                     const coin = d.instId.split("-")[0];
-                    const change = d.last - d.sodUtc8;
-                    const percent = ((change / d.sodUtc8) * 100).toFixed(2);
+                    const change = d.last - open;
+                    const percent = ((change / open) * 100).toFixed(2);
                     const vol = new Intl.NumberFormat("en-GB", {
                       notation: "compact",
                       compactDisplay: "short",
@@ -432,7 +443,7 @@
                     if (change > 0) dif = "+" + dif;
                     const logo = `https://static.okx.com/cdn/oksupport/asset/currency/icon/${coin.toLowerCase()}.png?x-oss-process=image/format,webp`;
 
-                    const color = +d.last > +d.sodUtc8 ? "green" : "red";
+                    const color = +d.last > +open ? "green" : "red";
                     Object.assign(t, d, {
                       coin,
                       percent,
@@ -479,6 +490,13 @@
           switchTheme() {
             this.darkMode = !this.darkMode;
             localStorage.setItem("darkMode", this.darkMode);
+          },
+          switchMode() {
+            this.openMode++;
+            if (this.openMode > 2) {
+              this.openMode = 0;
+            }
+            localStorage.setItem("openMode", this.openMode);
           },
           switchFGI() {
             this.showFGI = !this.showFGI;
