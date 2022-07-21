@@ -14,15 +14,17 @@
       [v-cloak] {
         opacity: 0;
       }
-      #app,
-      .container {
+      #app {
         height: 100%;
+        display: flex;
         color: #999;
       }
       .container {
+        flex: 1;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        overflow: auto;
       }
       .top-bar {
         display: flex;
