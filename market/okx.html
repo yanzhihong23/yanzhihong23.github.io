@@ -76,13 +76,19 @@
         border-bottom-right-radius: 6px;
       }
       .ratio {
-        width: 300px;
         padding: 20px;
-        line-height: 50px;
         font-size: 30px;
         display: flex;
         align-items: center;
         justify-content: space-between;
+      }
+      .ratio-item {
+        display: flex;
+        align-items: center;
+        padding-left: 16px;
+      }
+      .ratio .logo {
+        margin-right: 10px;
       }
       .time,
       .fgi {
@@ -246,13 +252,16 @@
             >
           </div>
           <div class="ratio">
-            Ratio:
-            <img src="./images/btc.png" width="30" height="30" alt="" />
-            <span style="padding-right: 20px" :class="btcRatio.color"
-              >{{btcRatio.value}}</span
-            >
-            <img src="./images/eth.png" width="30" height="30" alt="" />
-            <span :class="ethRatio.color">{{ethRatio.value}}</span>
+            <span>Ratio:</span>  
+            <div class="ratio-item">
+              <img class="logo" src="./images/btc.png" width="30" height="30" alt="" />
+              <span :class="btcRatio.color">{{btcRatio.value}}</span
+              >
+            </div>
+            <div class="ratio-item">
+              <img class="logo" src="./images/eth.png" width="30" height="30" alt="" />
+              <span :class="ethRatio.color">{{ethRatio.value}}</span>
+            </div>
           </div>
         </div>
 
@@ -523,10 +532,10 @@
           async fetchRatios() {
             setTimeout(this.fetchRatios, 5 * 60 * 1000);
 
-            this.btcRatio = await this.fetchRatio("BTC");
+            this.btcRatio = await this.fetchBinanceRatio("BTC");
 
             setTimeout(async () => {
-              this.ethRatio = await this.fetchRatio("ETH");
+              this.ethRatio = await this.fetchBinanceRatio("ETH");
             }, 2000);
           },
           async fetchRatio(coin) {
@@ -538,6 +547,18 @@
             if (!data || !data.data) return { value: 1, color: "" };
 
             const value = data.data[0][1];
+            const color = +value > 1 ? "red" : "green";
+
+            return { value, color };
+          },
+          async fetchBinanceRatio(coin) {
+            const url = `https://fapi.binance.com/futures/data/globalLongShortAccountRatio?symbol=${coin.toUpperCase()}USDT&period=5m&limit=1`
+
+            const res = await fetch(url)
+            const data = await res.json();
+            if (!data ) return { value: 1, color: "" };
+
+            const value = (+data[0]['longShortRatio']).toFixed(2);
             const color = +value > 1 ? "red" : "green";
 
             return { value, color };
