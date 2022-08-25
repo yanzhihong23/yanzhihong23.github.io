@@ -110,7 +110,7 @@
           return `https://fapi.binance.com/fapi/v1/premiumIndex?symbol=${this.symbol}`;
         },
         ratioEndpoint() {
-          return `https://fapi.binance.com/futures/data/topLongShortAccountRatio?symbol=${this.symbol}&period=15m&limit=1`
+          return `https://fapi.binance.com/futures/data/globalLongShortAccountRatio?symbol=${this.symbol}&period=15m&limit=1`
         }
       },
       methods: {
