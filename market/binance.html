@@ -122,6 +122,12 @@
         }
       },
       methods: {
+        shortFormat(val) {
+          return new Intl.NumberFormat("en-GB", {
+                      notation: "compact",
+                      compactDisplay: "short",
+                    }).format(val)
+        },
         async search() {
           this.info = [];
           this.msg = null;
@@ -140,6 +146,7 @@
         },
         update(data) {
           const cls = +data.priceChange > 0 ? 'up' : 'down';
+         
           this.info = [
             {name: 'open price', value: data.openPrice, usdt: true},
             {name: 'last price', value: data.lastPrice, cls: 'price', usdt: true},
@@ -148,8 +155,8 @@
             {name: 'weighted avg price', value: data.weightedAvgPrice, usdt: true},
             {name: '24h high', value: data.highPrice, usdt: true},
             {name: '24h low', value: data.lowPrice, usdt: true},
-            {name: '24h volumn', value: (data.volume/1000000).toFixed(2), unit: ' M'},
-            {name: '24h quote', value: (data.quoteVolume/1000000).toFixed(2), unit: ' M', usdt: true},
+            {name: '24h volumn', value: this.shortFormat(data.volume), unit: ''},
+            {name: '24h quote', value: this.shortFormat(data.quoteVolume), unit: '', usdt: true},
             {name: 'funding rate', value: (data.lastFundingRate*100).toFixed(4), unit: '%'},
             {name: '15m long short ratio', value: data.longShortRatio}
           ]
