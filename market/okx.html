@@ -181,12 +181,14 @@
       }
       .coin .vol,
       .price .high,
-      .price .low {
+      .price .low,
+      .size {
         color: #bbb;
       }
       .simple .vol,
       .simple .high,
-      .simple .low {
+      .simple .low,
+      .simple .size {
         opacity: 0;
       }
       .change {
@@ -288,6 +290,7 @@
             </div>
             <div class="line change">
               <span>{{t.dif}}</span>
+              <span class="size">{{t.size}}</span>
               <span>{{t.percent}}%</span>
             </div>
             <div class="action">
@@ -343,6 +346,10 @@
         }
 
         return "#" + color;
+      }
+
+      const numberFormat = (val, locales, options) => {
+        return new Intl.NumberFormat(locales, options).format(val)
       }
 
       const modes = ["UTC8", "UTC0", "24H"];
@@ -441,7 +448,7 @@
               data = JSON.parse(data);
               if (!data.data) return;
               if (data.arg.channel === "instruments") {
-                this.instruments = data.data.map((i) => i.instId);
+                this.instruments = data.data;
               } else if (data.arg.channel === "tickers") {
                 const d = data.data[0];
                 this.tickers.forEach((t) => {
@@ -451,13 +458,14 @@
                     const coin = d.instId.split("-")[0];
                     const change = d.last - open;
                     const percent = ((change / open) * 100).toFixed(2);
-                    const vol = new Intl.NumberFormat("en-GB", {
+                    const vol = numberFormat(t.volCcy24h * t.last, 'en-GB', {
                       notation: "compact",
                       compactDisplay: "short",
-                    }).format(t.volCcy24h * t.last);
-                    let dif = new Intl.NumberFormat().format(change);
+                    });
+                    let dif = numberFormat(change);
                     if (change > 0) dif = "+" + dif;
                     const logo = `https://static.okx.com/cdn/oksupport/asset/currency/icon/${coin.toLowerCase()}.png?x-oss-process=image/format,webp`;
+                    const size = numberFormat(d.lastSz * (+this.instruments.find(i => i.instId === d.instId).ctVal))
 
                     const color = +d.last > +open ? "green" : "red";
                     Object.assign(t, d, {
@@ -467,6 +475,7 @@
                       vol,
                       dif,
                       logo,
+                      size
                     });
                   }
                 });
@@ -569,7 +578,7 @@
             const isExsiting = this.tickers.find((t) => t.instId === instId);
             if (isExsiting) return;
 
-            const isValid = this.instruments.find((t) => t === instId);
+            const isValid = this.instruments.find((t) => t.instId === instId);
             if (!isValid) return;
 
             const arg = { channel: "tickers", instId };
