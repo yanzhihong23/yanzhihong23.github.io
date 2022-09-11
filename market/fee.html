@@ -47,7 +47,7 @@
       }
 
       @keyframes rotate {
-        0 {
+        0% {
           transform: rotate(0);
         }
         100% {
@@ -145,7 +145,7 @@
           },
         },
         created() {
-          this.update();
+          setInterval(this.update, 1000)
         },
       });
 
