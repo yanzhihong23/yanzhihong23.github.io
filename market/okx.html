@@ -571,7 +571,7 @@
 
             const res = await fetch(url)
             const data = await res.json();
-            if (!data ) return { value: 1, color: "" };
+            if (!data || !data[0] ) return { value: "", color: "" };
 
             const value = (+data[0]['longShortRatio']).toFixed(2);
             const color = +value > 1 ? "red" : "green";
@@ -638,7 +638,6 @@
               const coin = i.instId.split('-')[0]
               const { value } = await this.fetchBinanceRatio(coin)
               i.ratio = value
-              sleep(2000)
             })
 
             setTimeout(this.updateRatios, 5*60*1000) // 5min
