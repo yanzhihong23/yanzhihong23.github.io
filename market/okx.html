@@ -158,6 +158,9 @@
         display: flex;
         justify-content: space-between;
       }
+      .line.coin > * {
+        flex: 1;
+      }
       .coin .name {
         color: #999;
         font-size: 22px;
@@ -169,9 +172,7 @@
       .logo-name {
         display: flex;
         align-items: center;
-      }
-      .logo {
-        margin-right: 5px;
+        gap: 6px 6px;
       }
       .price {
         align-items: center;
@@ -179,16 +180,10 @@
       .price .last {
         font-size: 36px;
       }
-      .coin .vol,
-      .price .high,
-      .price .low,
-      .size {
+      .extra {
         color: #bbb;
       }
-      .simple .vol,
-      .simple .high,
-      .simple .low,
-      .simple .size {
+      .simple .extra {
         opacity: 0;
       }
       .change {
@@ -213,6 +208,9 @@
         background: #41b370;
         transform: scale(1.1);
         transition-duration: 0.3s;
+      }
+      .text-right {
+        text-align: right;
       }
     </style>
   </head>
@@ -281,16 +279,17 @@
                   >{{t.coin}}</span
                 >
               </div>
-              <span class="vol">{{t.vol}}</span>
+              <span class="extra">{{t.ratio}}</span>
+              <span class="extra text-right">{{t.vol}}</span>
             </div>
             <div class="line price">
-              <div class="low">{{t.low24h}}</div>
+              <div class="extra">{{t.low24h}}</div>
               <div class="last">{{t.last}}</div>
-              <div class="high">{{t.high24h}}</div>
+              <div class="extra">{{t.high24h}}</div>
             </div>
             <div class="line change">
               <span>{{t.dif}}</span>
-              <span class="size">{{t.size}}</span>
+              <span class="extra">{{t.size}}</span>
               <span>{{t.percent}}%</span>
             </div>
             <div class="action">
@@ -352,6 +351,12 @@
         return new Intl.NumberFormat(locales, options).format(val)
       }
 
+      const sleep = (time) => {
+        return new Promise(resolve => {
+          setTimeout(() => resolve(), time)
+        })
+      }
+
       const modes = ["UTC8", "UTC0", "24H"];
 
       const app = Vue.createApp({
@@ -408,6 +413,7 @@
         mounted() {
           this.fetchFGI();
           this.fetchRatios();
+          this.updateRatios()
         },
         methods: {
           connect() {
@@ -572,7 +578,7 @@
 
             return { value, color };
           },
-          add() {
+          async add() {
             const instId = this.query.toUpperCase().trim() + "-USDT-SWAP";
 
             const isExsiting = this.tickers.find((t) => t.instId === instId);
@@ -582,6 +588,7 @@
             if (!isValid) return;
 
             const arg = { channel: "tickers", instId };
+            arg.ratio = (await this.fetchBinanceRatio(instId.split('-')[0])).value
             this.tickers.push(arg);
 
             this.socket.send(
@@ -626,6 +633,16 @@
           save() {
             localStorage.setItem("tickers", JSON.stringify(this.tickers));
           },
+          updateRatios() {
+            this.tickers.forEach(async i => {
+              const coin = i.instId.split('-')[0]
+              const { value } = await this.fetchBinanceRatio(coin)
+              i.ratio = value
+              sleep(2000)
+            })
+
+            setTimeout(this.updateRatios, 5*60*1000) // 5min
+          }
         },
       });
 
