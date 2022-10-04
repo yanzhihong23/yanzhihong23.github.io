@@ -635,7 +635,8 @@
           },
           updateRatios() {
             this.tickers.forEach(async i => {
-              const coin = i.instId.split('-')[0]
+              let coin = i.instId.split('-')[0]
+              if(coin === 'LUNA') coin = 'LUNA2'
               const { value } = await this.fetchBinanceRatio(coin)
               i.ratio = value
             })
