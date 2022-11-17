@@ -601,6 +601,8 @@
             const isValid = this.instruments.find((t) => t.instId === instId);
             if (!isValid) return;
 
+            this.showSubs = false;
+
             const arg = { channel: "tickers", instId };
             arg.ratio = (await this.fetchBinanceRatio(instId.split('-')[0])).value
             this.tickers.push(arg);
@@ -613,7 +615,6 @@
             );
 
             this.query = "";
-            this.showSubs = false;
 
             this.save();
           },
