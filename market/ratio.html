@@ -141,20 +141,18 @@
             }
           },
           async update() {
-            const arr = []
+            this.info = []
             for (let symbol of this.symbols.values()) {
               let res = await axios.get('https://fapi.binance.com/futures/data/globalLongShortAccountRatio', {params: {symbol, period: '5m', limit: 1}})
               if(res && res.data.length) {
                 const ratio = +res.data[0]['longShortRatio']
-                arr.push({symbol, ratio})
+                this.info.push({symbol, ratio})
+                this.info.sort((a, b) => a.ratio - b.ratio)
               }
 
               this.sleep(100)
             }
 
-            arr.sort((a, b) => a.ratio - b.ratio)
-
-            this.info = arr
             setTimeout(this.update, 5* 60 *1000)
           },
         },
