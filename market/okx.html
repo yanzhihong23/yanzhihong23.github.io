@@ -424,10 +424,16 @@
             }
           };
         },
-        mounted() {
+        async mounted() {
           this.fetchFGI();
           this.fetchRatios();
           this.updateRatios()
+
+          const res = await fetch('https://cors.r2d2.to/?https://www.okx.com/api/v5/public/instruments?instType=SWAP')
+          const data = await res.json();
+          if (data.data.length) {
+            this.instruments = data.data
+          }
         },
         methods: {
           connect() {
@@ -468,6 +474,7 @@
               data = JSON.parse(data);
               if (!data.data) return;
               if (data.arg.channel === "instruments") {
+                console.log('this.instruments')
                 this.instruments = data.data;
               } else if (data.arg.channel === "tickers") {
                 const d = data.data[0];
@@ -485,7 +492,7 @@
                     let dif = numberFormat(change);
                     if (change > 0) dif = "+" + dif;
                     const logo = `https://static.okx.com/cdn/oksupport/asset/currency/icon/${coin.toLowerCase()}.png?x-oss-process=image/format,webp`;
-                    const size = numberFormat(d.lastSz * (+this.instruments.find(i => i.instId === d.instId).ctVal))
+                    const size = this.instruments.length && numberFormat(d.lastSz * (+this.instruments.find(i => i.instId === d.instId).ctVal))
 
                     const color = +d.last > +open ? "green" : "red";
                     Object.assign(t, d, {
