@@ -162,7 +162,7 @@
         display: flex;
         justify-content: space-between;
       }
-      .line.coin > * {
+      .line > * {
         flex: 1;
       }
       .coin .name {
@@ -222,6 +222,9 @@
         background: #41b370;
         transform: scale(1.1);
         transition-duration: 0.3s;
+      }
+      .text-left {
+        text-align: left;
       }
       .text-right {
         text-align: right;
@@ -297,14 +300,14 @@
               <span class="extra text-right">{{t.vol}}</span>
             </div>
             <div class="line price">
-              <div class="extra">{{t.low24h}}</div>
+              <div class="extra text-left">{{t.low24h}}</div>
               <div class="last">{{t.last}}</div>
-              <div class="extra">{{t.high24h}}</div>
+              <div class="extra text-right">{{t.high24h}}</div>
             </div>
             <div class="line change">
-              <span>{{t.dif}}</span>
+              <span class="extra text-left">{{t.oiCcy}}</span>
               <span class="extra">{{t.size}}</span>
-              <span>{{t.percent}}%</span>
+              <span class="text-right">{{t.dif}}&nbsp;&nbsp;{{t.percent}}%</span>
             </div>
             <div class="action">
               <img
@@ -455,6 +458,7 @@
                       instType: "SWAP",
                     },
                     ...this.tickers,
+                    ...this.tickers.map(i => ({channel: 'open-interest', instId: i.instId}))
                   ],
                 })
               );
@@ -474,38 +478,44 @@
               data = JSON.parse(data);
               if (!data.data) return;
               if (data.arg.channel === "instruments") {
-                console.log('this.instruments')
                 this.instruments = data.data;
               } else if (data.arg.channel === "tickers") {
                 const d = data.data[0];
-                this.tickers.forEach((t) => {
-                  if (t.instId === d.instId) {
-                    const keys = ["sodUtc8", "sodUtc0", "open24h"];
-                    const open = d[keys[this.openMode]];
-                    const coin = d.instId.split("-")[0];
-                    const change = d.last - open;
-                    const percent = ((change / open) * 100).toFixed(2);
-                    const vol = numberFormat(t.volCcy24h * t.last, 'en-GB', {
-                      notation: "compact",
-                      compactDisplay: "short",
-                    });
-                    let dif = numberFormat(change);
-                    if (change > 0) dif = "+" + dif;
-                    const logo = `https://static.okx.com/cdn/oksupport/asset/currency/icon/${coin.toLowerCase()}.png?x-oss-process=image/format,webp`;
-                    const size = this.instruments.length && numberFormat(d.lastSz * (+this.instruments.find(i => i.instId === d.instId).ctVal))
-
-                    const color = +d.last > +open ? "green" : "red";
-                    Object.assign(t, d, {
-                      coin,
-                      percent,
-                      color,
-                      vol,
-                      dif,
-                      logo,
-                      size
-                    });
-                  }
+                const t = this.tickers.find(i => i.instId === d.instId)
+                if (!t) return
+                const keys = ["sodUtc8", "sodUtc0", "open24h"];
+                const open = d[keys[this.openMode]];
+                const coin = d.instId.split("-")[0];
+                const change = d.last - open;
+                const percent = ((change / open) * 100).toFixed(2);
+                const vol = numberFormat(t.volCcy24h * t.last, 'en-GB', {
+                  notation: "compact",
+                  compactDisplay: "short",
                 });
+                let dif = numberFormat(change);
+                if (change > 0) dif = "+" + dif;
+                const logo = `https://static.okx.com/cdn/oksupport/asset/currency/icon/${coin.toLowerCase()}.png?x-oss-process=image/format,webp`;
+                const size = this.instruments.length && numberFormat(d.lastSz * (+this.instruments.find(i => i.instId === d.instId).ctVal))
+
+                const color = +d.last > +open ? "green" : "red";
+                Object.assign(t, d, {
+                  coin,
+                  percent,
+                  color,
+                  vol,
+                  dif,
+                  logo,
+                  size
+                });
+              } else if (data.arg.channel === 'open-interest') {
+                const d = data.data[0];
+                const ticker = this.tickers.find(t => t.instId === d.instId)
+                if (ticker) {
+                  ticker.oiCcy = numberFormat(d.oiCcy, 'en-GB', {
+                    notation: "compact",
+                    compactDisplay: "short",
+                  })
+                }
               }
             };
 
@@ -617,7 +627,7 @@
             this.socket.send(
               JSON.stringify({
                 op: "subscribe",
-                args: [arg],
+                args: [arg, { channel: 'open-interest', instId }],
               })
             );
 
@@ -631,7 +641,7 @@
             this.socket.send(
               JSON.stringify({
                 op: "unsubscribe",
-                args: [{ channel: "tickers", instId }],
+                args: [{ channel: "tickers", instId }, { channel: 'open-interest', instId }],
               })
             );
 
