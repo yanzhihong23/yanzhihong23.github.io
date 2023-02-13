@@ -432,7 +432,7 @@
           this.fetchRatios();
           this.updateRatios()
 
-          const res = await fetch('https://cors.r2d2.to/?https://www.okx.com/api/v5/public/instruments?instType=SWAP')
+          const res = await fetch('https://www.okx.com/api/v5/public/instruments?instType=SWAP')
           const data = await res.json();
           if (data.data.length) {
             this.instruments = data.data
