@@ -432,8 +432,7 @@
           this.fetchRatios();
           this.updateRatios()
 
-          const res = await fetch('https://timely.fans:81/proxy?https://www.okx.com/api/v5/public/instruments?instType=SWAP')
-          const data = await res.json();
+          const data = await this.proxyGet('https://www.okx.com/api/v5/public/instruments?instType=SWAP')
           if (data.data.length) {
             this.instruments = data.data
           }
@@ -566,6 +565,11 @@
               this.fetchFGI();
             }
           },
+          async proxyGet(url) {
+            const res = await fetch(`https://timely.fans:81/proxy?${url}`)
+            const data = await res.json();
+            return data;
+          },
           async fetchFGI() {
             const res = await fetch("https://api.alternative.me/fng/");
             const data = await res.json();
@@ -585,11 +589,9 @@
             }, 2000);
           },
           async fetchRatio(coin) {
-            const res = await fetch(
-              `https://timely.fans:81/proxy?https://www.okx.com/api/v5/rubik/stat/contracts/long-short-account-ratio?ccy=${coin.toUpperCase()}`
+            const data = await this.proxyGet(
+              `https://www.okx.com/api/v5/rubik/stat/contracts/long-short-account-ratio?ccy=${coin.toUpperCase()}`
             );
-
-            const data = await res.json();
             if (!data || !data.data) return { value: 1, color: "" };
 
             const value = data.data[0][1];
