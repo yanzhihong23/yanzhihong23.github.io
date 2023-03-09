@@ -146,8 +146,10 @@
               let res = await axios.get('https://fapi.binance.com/futures/data/globalLongShortAccountRatio', {params: {symbol, period: '5m', limit: 1}})
               if(res && res.data.length) {
                 const ratio = +res.data[0]['longShortRatio']
-                this.info.push({symbol, ratio})
-                this.info.sort((a, b) => a.ratio - b.ratio)
+                if(Date.now() - +res.data[0]['timestamp'] < 86400000) {
+                  this.info.push({symbol, ratio})
+                  this.info.sort((a, b) => a.ratio - b.ratio)
+                }
               }
 
               this.sleep(100)
