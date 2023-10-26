@@ -269,14 +269,25 @@
             >
           </div>
           <div class="ratio">
-            <span>Ratio:</span>  
+            <span>Ratio:</span>
             <div class="ratio-item">
-              <img class="logo" src="./images/btc.png" width="30" height="30" alt="" />
-              <span :class="btcRatio.color">{{btcRatio.value}}</span
-              >
+              <img
+                class="logo"
+                src="./images/btc.png"
+                width="30"
+                height="30"
+                alt=""
+              />
+              <span :class="btcRatio.color">{{btcRatio.value}}</span>
             </div>
             <div class="ratio-item">
-              <img class="logo" src="./images/eth.png" width="30" height="30" alt="" />
+              <img
+                class="logo"
+                src="./images/eth.png"
+                width="30"
+                height="30"
+                alt=""
+              />
               <span :class="ethRatio.color">{{ethRatio.value}}</span>
             </div>
           </div>
@@ -307,7 +318,9 @@
             <div class="line change">
               <span class="extra text-left">{{t.oiCcy}}</span>
               <span class="extra">{{t.size}}</span>
-              <span class="text-right">{{t.dif}}&nbsp;&nbsp;{{t.percent}}%</span>
+              <span class="text-right"
+                >{{t.dif}}&nbsp;&nbsp;{{t.percent}}%</span
+              >
             </div>
             <div class="action">
               <img
@@ -331,72 +344,72 @@
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script>
       function fngColouring(val) {
-        let color = "";
+        let color = '';
         switch (true) {
           case val >= 90:
-            color = "65c64c";
+            color = '65c64c';
             break;
           case val >= 75:
-            color = "79d23c";
+            color = '79d23c';
             break;
           case val >= 63:
-            color = "9bbe44";
+            color = '9bbe44';
             break;
           case val >= 54:
-            color = "c6bf22";
+            color = 'c6bf22';
             break;
           case val >= 46:
-            color = "dfce60";
+            color = 'dfce60';
             break;
           case val >= 35:
-            color = "d8bc59";
+            color = 'd8bc59';
             break;
           case val >= 25:
-            color = "e39d64";
+            color = 'e39d64';
             break;
           case val >= 10:
-            color = "d17339";
+            color = 'd17339';
             break;
           default:
-            color = "b74d34";
+            color = 'b74d34';
         }
 
-        return "#" + color;
+        return '#' + color;
       }
 
       const numberFormat = (val, locales, options) => {
-        return new Intl.NumberFormat(locales, options).format(val)
-      }
+        return new Intl.NumberFormat(locales, options).format(val);
+      };
 
       const sleep = (time) => {
-        return new Promise(resolve => {
-          setTimeout(() => resolve(), time)
-        })
-      }
+        return new Promise((resolve) => {
+          setTimeout(() => resolve(), time);
+        });
+      };
 
-      const modes = ["UTC8", "UTC0", "24H"];
+      const modes = ['UTC8', 'UTC0', '24H'];
 
       const app = Vue.createApp({
         data() {
           return {
             instruments: [],
             tickers: [
-              { channel: "tickers", instId: "BTC-USDT-SWAP" },
-              { channel: "tickers", instId: "ETH-USDT-SWAP" },
+              { channel: 'tickers', instId: 'BTC-USDT-SWAP' },
+              { channel: 'tickers', instId: 'ETH-USDT-SWAP' },
             ],
             timer: null,
             socket: null,
-            query: "",
+            query: '',
             showSubs: false,
             showMore: true,
-            darkMode: localStorage.getItem("darkMode") === "true",
-            btcRatio: { value: 1, color: "" },
-            ethRatio: { value: 1, color: "" },
+            darkMode: localStorage.getItem('darkMode') === 'true',
+            btcRatio: { value: 1, color: '' },
+            ethRatio: { value: 1, color: '' },
             showFGI: false,
             fgi: {},
-            time: "",
+            time: '',
             connectCount: 0,
-            openMode: +localStorage.getItem("openMode") || 0,
+            openMode: +localStorage.getItem('openMode') || 0,
           };
         },
         computed: {
@@ -430,11 +443,13 @@
         async mounted() {
           this.fetchFGI();
           this.fetchRatios();
-          this.updateRatios()
+          this.updateRatios();
 
-          const data = await this.proxyGet('https://www.okx.com/api/v5/public/instruments?instType=SWAP')
+          const data = await this.proxyGet(
+            'https://www.okx.com/api/v5/public/instruments?instType=SWAP'
+          );
           if (data.data.length) {
-            this.instruments = data.data
+            this.instruments = data.data;
           }
         },
         methods: {
@@ -444,20 +459,23 @@
             this.connectCount++;
             if (this.connectCount > 5) location.reload();
 
-            const ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public");
+            const ws = new WebSocket('wss://ws.okx.com:8443/ws/v5/public');
             this.socket = ws;
 
             ws.onopen = (event) => {
               ws.send(
                 JSON.stringify({
-                  op: "subscribe",
+                  op: 'subscribe',
                   args: [
                     {
-                      channel: "instruments",
-                      instType: "SWAP",
+                      channel: 'instruments',
+                      instType: 'SWAP',
                     },
                     ...this.tickers,
-                    ...this.tickers.map(i => ({channel: 'open-interest', instId: i.instId}))
+                    ...this.tickers.map((i) => ({
+                      channel: 'open-interest',
+                      instId: i.instId,
+                    })),
                   ],
                 })
               );
@@ -469,34 +487,39 @@
               }
 
               this.timer = setTimeout(() => {
-                ws.send("ping");
+                ws.send('ping');
               }, 20000);
 
               if (!/{/.test(data)) return;
 
               data = JSON.parse(data);
               if (!data.data) return;
-              if (data.arg.channel === "instruments") {
+              if (data.arg.channel === 'instruments') {
                 this.instruments = data.data;
-              } else if (data.arg.channel === "tickers") {
+              } else if (data.arg.channel === 'tickers') {
                 const d = data.data[0];
-                const t = this.tickers.find(i => i.instId === d.instId)
-                if (!t) return
-                const keys = ["sodUtc8", "sodUtc0", "open24h"];
+                const t = this.tickers.find((i) => i.instId === d.instId);
+                if (!t) return;
+                const keys = ['sodUtc8', 'sodUtc0', 'open24h'];
                 const open = d[keys[this.openMode]];
-                const coin = d.instId.split("-")[0];
+                const coin = d.instId.split('-')[0];
                 const change = d.last - open;
                 const percent = ((change / open) * 100).toFixed(2);
                 const vol = numberFormat(t.volCcy24h * t.last, 'en-GB', {
-                  notation: "compact",
-                  compactDisplay: "short",
+                  notation: 'compact',
+                  compactDisplay: 'short',
                 });
                 let dif = numberFormat(change);
-                if (change > 0) dif = "+" + dif;
+                if (change > 0) dif = '+' + dif;
                 const logo = `https://static.okx.com/cdn/oksupport/asset/currency/icon/${coin.toLowerCase()}.png?x-oss-process=image/format,webp`;
-                const size = this.instruments.length && numberFormat(d.lastSz * (+this.instruments.find(i => i.instId === d.instId).ctVal))
+                const size =
+                  this.instruments.length &&
+                  numberFormat(
+                    d.lastSz *
+                      +this.instruments.find((i) => i.instId === d.instId).ctVal
+                  );
 
-                const color = +d.last > +open ? "green" : "red";
+                const color = +d.last > +open ? 'green' : 'red';
                 Object.assign(t, d, {
                   coin,
                   percent,
@@ -504,32 +527,32 @@
                   vol,
                   dif,
                   logo,
-                  size
+                  size,
                 });
               } else if (data.arg.channel === 'open-interest') {
                 const d = data.data[0];
-                const ticker = this.tickers.find(t => t.instId === d.instId)
+                const ticker = this.tickers.find((t) => t.instId === d.instId);
                 if (ticker) {
                   ticker.oiCcy = numberFormat(d.oiCcy, 'en-GB', {
-                    notation: "compact",
-                    compactDisplay: "short",
-                  })
+                    notation: 'compact',
+                    compactDisplay: 'short',
+                  });
                 }
               }
             };
 
             ws.onclose = () => {
-              console.log("ws close");
+              console.log('ws close');
               this.connect();
             };
             ws.onerror = (err) => {
-              console.log("ws error", err);
+              console.log('ws error', err);
               this.connect();
             };
           },
           clock() {
             const date = new Date().toTimeString();
-            this.time = date.split(" ")[0];
+            this.time = date.split(' ')[0];
 
             setTimeout(this.clock, 1000);
           },
@@ -550,14 +573,14 @@
           },
           switchTheme() {
             this.darkMode = !this.darkMode;
-            localStorage.setItem("darkMode", this.darkMode);
+            localStorage.setItem('darkMode', this.darkMode);
           },
           switchMode() {
             this.openMode++;
             if (this.openMode > 2) {
               this.openMode = 0;
             }
-            localStorage.setItem("openMode", this.openMode);
+            localStorage.setItem('openMode', this.openMode);
           },
           switchFGI() {
             this.showFGI = !this.showFGI;
@@ -566,12 +589,12 @@
             }
           },
           async proxyGet(url) {
-            const res = await fetch(`https://timely.fans:81/proxy?${url}`)
+            const res = await fetch(`https://tst.openask.me/proxy?${url}`);
             const data = await res.json();
             return data;
           },
           async fetchFGI() {
-            const res = await fetch("https://api.alternative.me/fng/");
+            const res = await fetch('https://api.alternative.me/fng/');
             const data = await res.json();
 
             if (data) {
@@ -582,37 +605,37 @@
           async fetchRatios() {
             setTimeout(this.fetchRatios, 5 * 60 * 1000);
 
-            this.btcRatio = await this.fetchBinanceRatio("BTC");
+            this.btcRatio = await this.fetchBinanceRatio('BTC');
 
             setTimeout(async () => {
-              this.ethRatio = await this.fetchBinanceRatio("ETH");
+              this.ethRatio = await this.fetchBinanceRatio('ETH');
             }, 2000);
           },
           async fetchRatio(coin) {
             const data = await this.proxyGet(
               `https://www.okx.com/api/v5/rubik/stat/contracts/long-short-account-ratio?ccy=${coin.toUpperCase()}`
             );
-            if (!data || !data.data) return { value: 1, color: "" };
+            if (!data || !data.data) return { value: 1, color: '' };
 
             const value = data.data[0][1];
-            const color = +value > 1 ? "red" : "green";
+            const color = +value > 1 ? 'red' : 'green';
 
             return { value, color };
           },
           async fetchBinanceRatio(coin) {
-            const url = `https://fapi.binance.com/futures/data/globalLongShortAccountRatio?symbol=${coin.toUpperCase()}USDT&period=5m&limit=1`
+            const url = `https://fapi.binance.com/futures/data/globalLongShortAccountRatio?symbol=${coin.toUpperCase()}USDT&period=5m&limit=1`;
 
-            const res = await fetch(url)
+            const res = await fetch(url);
             const data = await res.json();
-            if (!data || !data[0] ) return { value: "", color: "" };
+            if (!data || !data[0]) return { value: '', color: '' };
 
             const value = (+data[0]['longShortRatio']).toFixed(2);
-            const color = +value > 1 ? "red" : "green";
+            const color = +value > 1 ? 'red' : 'green';
 
             return { value, color };
           },
           async add() {
-            const instId = this.query.toUpperCase().trim() + "-USDT-SWAP";
+            const instId = this.query.toUpperCase().trim() + '-USDT-SWAP';
 
             const isExsiting = this.tickers.find((t) => t.instId === instId);
             if (isExsiting) return;
@@ -622,18 +645,20 @@
 
             this.showSubs = false;
 
-            const arg = { channel: "tickers", instId };
-            arg.ratio = (await this.fetchBinanceRatio(instId.split('-')[0])).value
+            const arg = { channel: 'tickers', instId };
+            arg.ratio = (
+              await this.fetchBinanceRatio(instId.split('-')[0])
+            ).value;
             this.tickers.push(arg);
 
             this.socket.send(
               JSON.stringify({
-                op: "subscribe",
+                op: 'subscribe',
                 args: [arg, { channel: 'open-interest', instId }],
               })
             );
 
-            this.query = "";
+            this.query = '';
 
             this.save();
           },
@@ -642,8 +667,11 @@
 
             this.socket.send(
               JSON.stringify({
-                op: "unsubscribe",
-                args: [{ channel: "tickers", instId }, { channel: 'open-interest', instId }],
+                op: 'unsubscribe',
+                args: [
+                  { channel: 'tickers', instId },
+                  { channel: 'open-interest', instId },
+                ],
               })
             );
 
@@ -651,13 +679,13 @@
           },
           viewChart(coin) {
             const url = `https://www.aicoin.com/chart/okcoinfutures_${coin.toLowerCase()}swapusdt`;
-            window.open(url, "_blank").focus();
+            window.open(url, '_blank').focus();
           },
           logo(coin) {
             return `https://static.okx.com/cdn/oksupport/asset/currency/icon/${coin.toLowerCase()}.png?x-oss-process=image/format,webp`;
           },
           cache() {
-            let data = localStorage.getItem("tickers");
+            let data = localStorage.getItem('tickers');
             if (data) {
               data = JSON.parse(data);
             }
@@ -665,22 +693,22 @@
             return data;
           },
           save() {
-            localStorage.setItem("tickers", JSON.stringify(this.tickers));
+            localStorage.setItem('tickers', JSON.stringify(this.tickers));
           },
           updateRatios() {
-            this.tickers.forEach(async i => {
-              let coin = i.instId.split('-')[0]
-              if(coin === 'LUNA') coin = 'LUNA2'
-              const { value } = await this.fetchBinanceRatio(coin)
-              i.ratio = value
-            })
+            this.tickers.forEach(async (i) => {
+              let coin = i.instId.split('-')[0];
+              if (coin === 'LUNA') coin = 'LUNA2';
+              const { value } = await this.fetchBinanceRatio(coin);
+              i.ratio = value;
+            });
 
-            setTimeout(this.updateRatios, 5*60*1000) // 5min
-          }
+            setTimeout(this.updateRatios, 5 * 60 * 1000); // 5min
+          },
         },
       });
 
-      app.mount("#app");
+      app.mount('#app');
     </script>
   </body>
 </html>
