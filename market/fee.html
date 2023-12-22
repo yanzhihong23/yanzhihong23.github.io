@@ -67,7 +67,7 @@
         border-radius: 100%;
       }
       .refresh-icon:after {
-        content: "";
+        content: '';
         position: absolute;
         border: 7px solid transparent;
         border-top: 7px solid red;
@@ -79,7 +79,7 @@
         transform: rotate(-40deg);
       }
       .refresh-icon:before {
-        content: "";
+        content: '';
         position: absolute;
         border: 7px solid transparent;
         border-bottom: 7px solid red;
@@ -123,7 +123,7 @@
     <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.min.js"></script>
     <script>
       const app = Vue.createApp({
-        el: "#app",
+        el: '#app',
         data() {
           return {
             info: [],
@@ -136,20 +136,22 @@
             );
             if (res) {
               this.info = res.data
+                .filter((i) => /USDT$/.test(i.symbol))
                 .sort((a, b) => +b.lastFundingRate - +a.lastFundingRate)
                 .map((i) => {
                   i.fee = (i.lastFundingRate * 100).toFixed(4);
+                  i.symbol = i.symbol.replace('USDT', '');
                   return i;
                 });
             }
           },
         },
         created() {
-          setInterval(this.update, 1000)
+          setInterval(this.update, 1000);
         },
       });
 
-      app.mount("#app");
+      app.mount('#app');
     </script>
   </body>
 </html>
