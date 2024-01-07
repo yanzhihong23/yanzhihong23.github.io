@@ -317,8 +317,8 @@
             </div>
             <div class="line change">
               <span class="extra text-left"
-                >{{t.oiCcy}}｜{{t.fundingRate}}<span style="font-size: 12px"
-                  >‱</span
+                >{{t.oiCcy}}｜<span :class="/^-/.test(t.fundingRate)?'red':''"
+                  >{{t.fundingRate}}<span style="font-size: 12px">‱</span></span
                 ></span
               >
               <span class="extra">{{t.size}}</span>
