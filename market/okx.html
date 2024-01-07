@@ -328,6 +328,18 @@
             </div>
             <div class="action">
               <img
+                src="./images/previous.png"
+                @click="move(idx, true)"
+                width="40"
+                alt=""
+              />
+              <img
+                src="./images/next.png"
+                @click="move(idx, false)"
+                width="40"
+                alt=""
+              />
+              <img
                 src="./images/chart.png"
                 @click="viewChart(t.coin)"
                 width="60"
@@ -698,6 +710,17 @@
           viewChart(coin) {
             const url = `https://www.aicoin.com/chart/okcoinfutures_${coin.toLowerCase()}swapusdt`;
             window.open(url, '_blank').focus();
+          },
+          move(index, forward) {
+            const to = forward ? index - 1 : index + 1;
+            if (to < 0 || to > this.tickers.length) return;
+
+            [this.tickers[index], this.tickers[to]] = [
+              this.tickers[to],
+              this.tickers[index],
+            ];
+
+            this.save();
           },
           logo(coin) {
             return `https://static.okx.com/cdn/oksupport/asset/currency/icon/${coin.toLowerCase()}.png?x-oss-process=image/format,webp`;
