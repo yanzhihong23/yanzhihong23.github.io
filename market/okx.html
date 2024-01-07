@@ -316,7 +316,9 @@
               <div class="extra text-right">{{t.high24h}}</div>
             </div>
             <div class="line change">
-              <span class="extra text-left">{{t.oiCcy}}</span>
+              <span class="extra text-left"
+                >{{t.oiCcy}}｜{{t.fundingRate}}‱</span
+              >
               <span class="extra">{{t.size}}</span>
               <span class="text-right"
                 >{{t.dif}}&nbsp;&nbsp;{{t.percent}}%</span
@@ -476,6 +478,10 @@
                       channel: 'open-interest',
                       instId: i.instId,
                     })),
+                    ...this.tickers.map((i) => ({
+                      channel: 'funding-rate',
+                      instId: i.instId,
+                    })),
                   ],
                 })
               );
@@ -537,6 +543,12 @@
                     notation: 'compact',
                     compactDisplay: 'short',
                   });
+                }
+              } else if (data.arg.channel === 'funding-rate') {
+                const d = data.data[0];
+                const ticker = this.tickers.find((t) => t.instId === d.instId);
+                if (ticker) {
+                  ticker.fundingRate = (+d.fundingRate * 10000).toFixed(1);
                 }
               }
             };
@@ -654,7 +666,11 @@
             this.socket.send(
               JSON.stringify({
                 op: 'subscribe',
-                args: [arg, { channel: 'open-interest', instId }],
+                args: [
+                  arg,
+                  { channel: 'open-interest', instId },
+                  { channel: 'funding-rate', instId },
+                ],
               })
             );
 
