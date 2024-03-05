@@ -464,8 +464,8 @@
           const data = await this.proxyGet(
             'https://www.okx.com/api/v5/public/instruments?instType=SWAP'
           );
-          if (data.data.length) {
-            this.instruments = data.data;
+          if (data.length) {
+            this.instruments = data;
           }
         },
         methods: {
