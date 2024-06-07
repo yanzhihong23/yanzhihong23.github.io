@@ -739,7 +739,13 @@
           updateRatios() {
             this.tickers.forEach(async (i) => {
               let coin = i.instId.split('-')[0];
-              if (coin === 'LUNA') coin = 'LUNA2';
+              if (coin === 'LUNA') {
+                coin = 'LUNA2';
+              } else if (
+                /SHIB|XEC|LUNC|PEPE|FLOKI|BONK|SATAS|RATS/.test(coin)
+              ) {
+                coin = `1000${coin}`;
+              }
               const { value } = await this.fetchBinanceRatio(coin);
               i.ratio = value;
             });
