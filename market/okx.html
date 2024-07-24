@@ -405,6 +405,42 @@
 
       const modes = ['UTC8', 'UTC0', '24H'];
 
+      class FetchLimiter {
+        constructor(fetchFunction, interval) {
+          this.queue = [];
+          this.processing = false;
+          this.interval = interval;
+          this.fetchFunction = fetchFunction;
+        }
+
+        async processQueue() {
+          if (this.processing || this.queue.length === 0) {
+            return;
+          }
+
+          this.processing = true;
+          const { args, resolve } = this.queue.shift();
+
+          try {
+            const result = await this.fetchFunction(...args);
+            resolve(result);
+          } catch (error) {
+            console.error(error);
+            resolve(null);
+          } finally {
+            this.processing = false;
+            setTimeout(() => this.processQueue(), this.interval);
+          }
+        }
+
+        async fetchWithLimit(...args) {
+          return new Promise((resolve) => {
+            this.queue.push({ args, resolve });
+            this.processQueue();
+          });
+        }
+      }
+
       const app = Vue.createApp({
         data() {
           return {
@@ -739,9 +775,11 @@
             localStorage.setItem('tickers', JSON.stringify(this.tickers));
           },
           updateRatios() {
+            const fetchLimiter = new FetchLimiter(this.fetchRatio, 500);
+
             this.tickers.forEach(async (i) => {
               const coin = i.instId.split('-')[0];
-              const { value } = await this.fetchRatio(coin);
+              const { value } = await fetchLimiter.fetchWithLimit(coin);
               i.ratio = value;
             });
 
