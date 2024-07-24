@@ -641,15 +641,19 @@
             const data = await this.proxyGet(
               `https://www.okx.com/api/v5/rubik/stat/contracts/long-short-account-ratio?ccy=${coin.toUpperCase()}`
             );
-            if (!data || !data.data) return { value: 1, color: '' };
+            if (!data) return { value: 1, color: '' };
 
-            const value = data.data[0][1];
+            const value = data[0][1];
             const color = +value > 1 ? 'red' : 'green';
 
             return { value, color };
           },
           async fetchBinanceRatio(coin) {
-            const url = `https://fapi.binance.com/futures/data/globalLongShortAccountRatio?symbol=${coin.toUpperCase()}USDT&period=5m&limit=1`;
+            let symbol = coin.toUpperCase();
+            if (/SHIB|XEC|LUNC|PEPE|FLOKI|BONK|SATAS|RATS/.test(coin)) {
+              symbol = `1000${coin}`;
+            }
+            const url = `https://fapi.binance.com/futures/data/globalLongShortAccountRatio?symbol=${symbol}USDT&period=5m&limit=1`;
 
             const res = await fetch(url);
             const data = await res.json();
@@ -672,9 +676,7 @@
             this.showSubs = false;
 
             const arg = { channel: 'tickers', instId };
-            arg.ratio = (
-              await this.fetchBinanceRatio(instId.split('-')[0])
-            ).value;
+            arg.ratio = (await this.fetchRatio(instId.split('-')[0])).value;
             this.tickers.push(arg);
 
             this.socket.send(
@@ -738,15 +740,8 @@
           },
           updateRatios() {
             this.tickers.forEach(async (i) => {
-              let coin = i.instId.split('-')[0];
-              if (coin === 'LUNA') {
-                coin = 'LUNA2';
-              } else if (
-                /SHIB|XEC|LUNC|PEPE|FLOKI|BONK|SATAS|RATS/.test(coin)
-              ) {
-                coin = `1000${coin}`;
-              }
-              const { value } = await this.fetchBinanceRatio(coin);
+              const coin = i.instId.split('-')[0];
+              const { value } = await this.fetchRatio(coin);
               i.ratio = value;
             });
 
